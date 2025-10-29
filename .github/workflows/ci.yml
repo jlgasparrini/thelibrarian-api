@@ -74,8 +74,12 @@ jobs:
           RAILS_ENV: test
           DATABASE_URL: postgres://postgres:postgres@localhost:5432/thelibrarian_api_test
         run: |
-          bin/rails db:create db:migrate
-          git diff --exit-code db/schema.rb || (echo "Schema is out of sync. Run 'rails db:migrate' and commit the changes." && exit 1)
+          if [ -f db/schema.rb ]; then
+            bin/rails db:migrate
+            git diff --exit-code db/schema.rb || (echo "Schema is out of sync. Run 'rails db:migrate' and commit the changes." && exit 1)
+          else
+            echo "No schema.rb found yet - skipping schema check"
+          fi
 
   test:
     runs-on: ubuntu-latest
@@ -108,10 +112,16 @@ jobs:
         env:
           RAILS_ENV: test
           DATABASE_URL: postgres://postgres:postgres@localhost:5432/thelibrarian_api_test
-        run: bin/rails db:create db:schema:load
+        run: |
+          if [ -f db/schema.rb ]; then
+            bin/rails db:schema:load
+          else
+            echo "No schema.rb found - database is empty (no migrations yet)"
+          fi
 
       - name: Run tests
         env:
           RAILS_ENV: test
           DATABASE_URL: postgres://postgres:postgres@localhost:5432/thelibrarian_api_test
-        run: bundle exec rspec
+        run: bundle exec rspec --format documentation --jobs 2
+
