@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_29_063132) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_29_065742) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -24,11 +24,28 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_29_063132) do
     t.integer "available_copies", default: 1, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "borrowings_count", default: 0, null: false
     t.index ["author"], name: "index_books_on_author_gin", opclass: :gin_trgm_ops, using: :gin
     t.index ["available_copies"], name: "index_books_on_available_copies"
     t.index ["genre"], name: "index_books_on_genre"
     t.index ["isbn"], name: "index_books_on_isbn", unique: true
     t.index ["title"], name: "index_books_on_title_gin", opclass: :gin_trgm_ops, using: :gin
+  end
+
+  create_table "borrowings", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "book_id", null: false
+    t.datetime "borrowed_at", null: false
+    t.datetime "due_date", null: false
+    t.datetime "returned_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["book_id"], name: "index_borrowings_on_book_id"
+    t.index ["borrowed_at"], name: "index_borrowings_on_borrowed_at"
+    t.index ["due_date"], name: "index_borrowings_on_due_date"
+    t.index ["returned_at"], name: "index_borrowings_on_returned_at"
+    t.index ["user_id", "book_id", "returned_at"], name: "index_borrowings_on_user_book_returned"
+    t.index ["user_id"], name: "index_borrowings_on_user_id"
   end
 
   create_table "jwt_denylist", force: :cascade do |t|
@@ -53,4 +70,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_29_063132) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["role"], name: "index_users_on_role"
   end
+
+  add_foreign_key "borrowings", "books"
+  add_foreign_key "borrowings", "users"
 end

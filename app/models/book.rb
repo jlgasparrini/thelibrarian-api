@@ -1,4 +1,7 @@
 class Book < ApplicationRecord
+  # Associations
+  has_many :borrowings, dependent: :destroy
+
   # Validations
   validates :title, presence: true
   validates :author, presence: true

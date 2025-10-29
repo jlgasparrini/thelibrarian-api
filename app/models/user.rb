@@ -5,6 +5,9 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable,
          :jwt_authenticatable, jwt_revocation_strategy: JwtDenylist
 
+  # Associations
+  has_many :borrowings, dependent: :destroy
+
   # Role enum: member (default) and librarian
   enum :role, { member: 0, librarian: 1 }
 
