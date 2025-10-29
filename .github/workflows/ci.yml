@@ -73,6 +73,7 @@ jobs:
         env:
           RAILS_ENV: test
           DATABASE_URL: postgres://postgres:postgres@localhost:5432/thelibrarian_api_test
+          JWT_SECRET_KEY: test_secret_key_for_ci_only
         run: |
           if [ -f db/schema.rb ]; then
             bin/rails db:migrate
@@ -112,6 +113,7 @@ jobs:
         env:
           RAILS_ENV: test
           DATABASE_URL: postgres://postgres:postgres@localhost:5432/thelibrarian_api_test
+          JWT_SECRET_KEY: test_secret_key_for_ci_only
         run: |
           if [ -f db/schema.rb ]; then
             bin/rails db:schema:load
@@ -123,5 +125,6 @@ jobs:
         env:
           RAILS_ENV: test
           DATABASE_URL: postgres://postgres:postgres@localhost:5432/thelibrarian_api_test
+          JWT_SECRET_KEY: test_secret_key_for_ci_only
         run: bundle exec rspec --format documentation
 
