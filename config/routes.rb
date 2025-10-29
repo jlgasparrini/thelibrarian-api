@@ -12,6 +12,9 @@ Rails.application.routes.draw do
 
       # User profile
       get "users/me", to: "users#me"
+
+      # Books
+      resources :books
     end
   end
 

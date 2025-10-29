@@ -10,9 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_29_054845) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_29_062301) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "books", force: :cascade do |t|
+    t.string "title", null: false
+    t.string "author", null: false
+    t.string "genre"
+    t.string "isbn", null: false
+    t.integer "total_copies", default: 1, null: false
+    t.integer "available_copies", default: 1, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["author"], name: "index_books_on_author"
+    t.index ["genre"], name: "index_books_on_genre"
+    t.index ["isbn"], name: "index_books_on_isbn", unique: true
+    t.index ["title"], name: "index_books_on_title"
+  end
 
   create_table "jwt_denylist", force: :cascade do |t|
     t.string "jti", null: false
