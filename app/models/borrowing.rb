@@ -1,6 +1,6 @@
 class Borrowing < ApplicationRecord
   belongs_to :user
-  belongs_to :book
+  belongs_to :book, counter_cache: true
 
   # Validations
   validates :borrowed_at, presence: true
@@ -66,10 +66,19 @@ class Borrowing < ApplicationRecord
   end
 
   def decrement_available_copies
-    book.decrement!(:available_copies)
+    # Use with_lock to prevent race conditions
+    book.with_lock do
+      if book.available_copies > 0
+        book.decrement!(:available_copies)
+      else
+        raise ActiveRecord::RecordInvalid, "Book is no longer available"
+      end
+    end
   end
 
   def increment_available_copies
-    book.increment!(:available_copies)
+    book.with_lock do
+      book.increment!(:available_copies)
+    end
   end
 end

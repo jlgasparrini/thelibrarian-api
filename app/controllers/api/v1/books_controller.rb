@@ -24,7 +24,13 @@ module Api
 
         authorize @books
 
-        render json: { books: @books }, status: :ok
+        # Pagination
+        pagy, books = pagy(@books, items: params[:per_page] || 25)
+
+        render json: {
+          books: books,
+          pagination: pagy_metadata(pagy)
+        }, status: :ok
       end
 
       def show

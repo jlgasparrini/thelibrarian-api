@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_29_063545) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_29_065742) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -24,6 +24,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_29_063545) do
     t.integer "available_copies", default: 1, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "borrowings_count", default: 0, null: false
     t.index ["author"], name: "index_books_on_author_gin", opclass: :gin_trgm_ops, using: :gin
     t.index ["available_copies"], name: "index_books_on_available_copies"
     t.index ["genre"], name: "index_books_on_genre"

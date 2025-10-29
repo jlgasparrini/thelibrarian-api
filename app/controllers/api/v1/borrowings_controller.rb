@@ -17,7 +17,13 @@ module Api
 
         authorize @borrowings
 
-        render json: { borrowings: @borrowings.as_json(include: { book: { only: [ :id, :title, :author ] }, user: { only: [ :id, :email ] } }) }, status: :ok
+        # Pagination
+        pagy, borrowings = pagy(@borrowings, items: params[:per_page] || 25)
+
+        render json: {
+          borrowings: borrowings.as_json(include: { book: { only: [ :id, :title, :author ] }, user: { only: [ :id, :email ] } }),
+          pagination: pagy_metadata(pagy)
+        }, status: :ok
       end
 
       def show
@@ -54,7 +60,13 @@ module Api
         @borrowings = policy_scope(Borrowing).overdue.includes(:book, :user).order(due_date: :asc)
         authorize @borrowings
 
-        render json: { borrowings: @borrowings.as_json(include: { book: { only: [ :id, :title, :author ] }, user: { only: [ :id, :email ] } }) }, status: :ok
+        # Pagination
+        pagy, borrowings = pagy(@borrowings, items: params[:per_page] || 25)
+
+        render json: {
+          borrowings: borrowings.as_json(include: { book: { only: [ :id, :title, :author ] }, user: { only: [ :id, :email ] } }),
+          pagination: pagy_metadata(pagy)
+        }, status: :ok
       end
 
       private
