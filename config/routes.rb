@@ -15,6 +15,13 @@ Rails.application.routes.draw do
 
       # Books
       resources :books
+
+      # Borrowings
+      resources :borrowings, only: [ :index, :show, :create, :update ] do
+        collection do
+          get :overdue
+        end
+      end
     end
   end
 
