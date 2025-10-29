@@ -14,7 +14,7 @@ module Api
             }, status: :created
           else
             render json: {
-              message: 'User could not be created.',
+              message: "User could not be created.",
               errors: resource.errors.full_messages
             }, status: :unprocessable_content
           end

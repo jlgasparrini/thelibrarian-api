@@ -54,7 +54,7 @@ RSpec.describe 'Api::V1::Auth::Registrations', type: :request do
 
       it 'returns error messages' do
         post '/api/v1/auth/sign_up', params: invalid_params
-        
+
         expect(response).to have_http_status(:unprocessable_content)
         expect(json_response['message']).to eq('User could not be created.')
         expect(json_response['errors']).to be_present

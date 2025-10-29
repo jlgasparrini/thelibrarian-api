@@ -54,14 +54,14 @@ RSpec.describe UserPolicy, type: :policy do
   describe 'Scope' do
     it 'returns only the user for members' do
       scope = Pundit.policy_scope!(member, User)
-      expect(scope).to eq([member])
+      expect(scope).to eq([ member ])
     end
 
     it 'returns all users for librarians' do
       member
       librarian
       other_user
-      
+
       scope = Pundit.policy_scope!(librarian, User)
       expect(scope.count).to eq(User.count)
     end
