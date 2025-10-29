@@ -183,7 +183,7 @@ Each step is self-contained and test-driven: implement → test → refactor →
 
 ---
 
-## 🧱 Step 8 — Future Enhancements (Optional)
+## 🧱 Step 8 — Enhancements
 
 **Goal:** Add advanced, production-grade features (gems installed but not yet configured).
 
