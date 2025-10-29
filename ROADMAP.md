@@ -26,20 +26,20 @@ Each step is self-contained and test-driven: implement → test → refactor →
 ## 👤 Step 2 — Authentication & Roles
 **Goal:** Implement Devise authentication and role-based access control.
 
-- [ ] Generate `User` model with Devise.
-- [ ] Add `role` column (enum: `member: 0`, `librarian: 1`).
-- [ ] Configure **Devise JWT** for token-based auth.
-- [ ] Implement Pundit for authorization policies.
-- [ ] Create endpoints:
-  - [ ] `POST /api/v1/auth/sign_up`
-  - [ ] `POST /api/v1/auth/sign_in`
-  - [ ] `DELETE /api/v1/auth/sign_out`
-  - [ ] `GET /api/v1/users/me`
-- [ ] Write RSpec tests for:
-  - User registration
-  - JWT authentication
-  - Role enforcement (member vs librarian)
-- [ ] ✅ Run tests → all authentication specs passing.
+- [x] Generate `User` model with Devise.
+- [x] Add `role` column (enum: `member: 0`, `librarian: 1`).
+- [x] Configure **Devise JWT** for token-based auth.
+- [x] Implement Pundit for authorization policies.
+- [x] Create endpoints:
+  - [x] `POST /api/v1/auth/sign_up`
+  - [x] `POST /api/v1/auth/sign_in`
+  - [x] `DELETE /api/v1/auth/sign_out`
+  - [x] `GET /api/v1/users/me`
+- [x] Write RSpec tests for:
+  - [x] User registration
+  - [x] JWT authentication
+  - [x] Role enforcement (member vs librarian)
+- [x] ✅ Run tests → all authentication specs passing (31 examples, 0 failures).
 
 ---
 
