@@ -30,6 +30,7 @@ This API allows both **Librarians** and **Members** to log in, interact with boo
 |-----------|-------------|
 | Language | Ruby 3.x |
 | Framework | Ruby on Rails 8.x |
+| Database | PostgreSQL 14.x |
 | Authentication | Devise JWT |
 | Authorization | Pundit |
 | Testing | RSpec + FactoryBot + Faker |
