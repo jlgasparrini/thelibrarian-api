@@ -91,26 +91,31 @@ Each step is self-contained and test-driven: implement → test → refactor →
   - Returning flow
   - Overdue scope
   - Authorization (members vs librarians)
-- [x] ✅ Run tests → all borrowing specs passing (72 examples, 0 failures).
+- [x] ✅ Run tests → all borrowing specs passing (112 examples, 0 failures).
 
 ---
 
 ## 📊 Step 5 — Dashboard Endpoints
 **Goal:** Expose aggregated data for both roles.
 
-- [ ] Create `DashboardsController`.
-- [ ] Implement endpoints:
-  - [ ] `GET /api/v1/dashboard`
-  - [ ] `GET /api/v1/dashboard`
-- [ ] Librarian dashboard returns:
-  - total_books
-  - borrowed_books
-  - books_due_today
+- [x] Create `DashboardsController`.
+- [x] Implement endpoints:
+  - [x] `GET /api/v1/dashboard` (role-based response)
+- [x] Librarian dashboard returns:
+  - total_books, total_available_books
+  - total_borrowed_books, books_due_today
+  - overdue_books, total_members
   - members_with_overdue_books
-- [ ] Member dashboard returns:
-  - borrowed books list, due dates, overdue status
-- [ ] Write RSpec tests validating JSON structure.
-- [ ] ✅ Run tests → all dashboard specs passing.
+  - recent_borrowings (last 10)
+  - popular_books (top 10 by borrowings_count)
+  - overdue_borrowings (top 10)
+- [x] Member dashboard returns:
+  - active_borrowings_count, overdue_borrowings_count
+  - books_due_soon (within 3 days)
+  - borrowed_books (with book details, due dates, overdue status)
+  - borrowing_history (last 10 returned books)
+- [x] Write RSpec tests validating JSON structure.
+- [x] ✅ Run tests → all dashboard specs passing (137 examples, 0 failures).
 
 ---
 

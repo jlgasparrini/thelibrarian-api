@@ -22,6 +22,9 @@ Rails.application.routes.draw do
           get :overdue
         end
       end
+
+      # Dashboard
+      resource :dashboard, only: [ :show ]
     end
   end
 
