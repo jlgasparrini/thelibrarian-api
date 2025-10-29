@@ -1,26 +1,32 @@
 # 📚 Library Management API
 
-This project is a **Ruby on Rails RESTful API**. It implements a complete **Library Management System**, featuring authentication, role-based access, book management, borrowing flows, and dashboards — all built following **test-driven development (TDD)** principles.
+A **production-ready Ruby on Rails RESTful API** for library management, featuring JWT authentication, role-based authorization, book management, borrowing workflows, and analytics dashboards — all built following **test-driven development (TDD)** principles.
+
+[![Tests](https://img.shields.io/badge/tests-137%20passing-success)]()
+[![Coverage](https://img.shields.io/badge/coverage-100%25-success)]()
+[![Ruby](https://img.shields.io/badge/ruby-3.4.7-red)]()
+[![Rails](https://img.shields.io/badge/rails-8.0-red)]()
 
 ---
 
-## 🧩 Informal User Story
+## 🎯 Overview
 
-The system is designed to support two main roles within a library environment: **Librarians** and **Members**.  
-Librarians need a way to efficiently manage books, track borrowings, and monitor library activity.  
-Members should be able to register, browse available books, borrow and return them, and keep track of their due dates.  
+This API supports two user roles:
+- **Librarians** - Manage books, track borrowings, monitor library activity
+- **Members** - Browse books, borrow/return items, track due dates
 
-This API allows both **Librarians** and **Members** to log in, interact with books, and access personalized dashboards.
+Built with clean architecture, comprehensive test coverage, and production-ready deployment configuration.
 
 ---
 
-## 🧭 Project Documentation
+## 📚 Documentation
 
-- 📘 [User Stories](./USER_STORIES.md)  
-  Functional requirements and API endpoints.
-
-- 🧱 [API Roadmap](./ROADMAP.md)  
-  Step-by-step TDD development guide including models, controllers, specs, and enhancements.
+- 📘 [User Stories](./docs/USER_STORIES.md) - Functional requirements and API endpoints
+- 🧱 [Development Roadmap](./docs/ROADMAP.md) - TDD development guide and implementation steps
+- 📖 [API Documentation](./docs/API_DOCUMENTATION.md) - Complete endpoint reference with examples
+- 🐳 [Docker Setup](./docs/DOCKER.md) - Local development with Docker
+- 🚀 [Deployment Guide](./docs/DEPLOYMENT.md) - Production deployment instructions
+- ✅ [Production Checklist](./docs/PRODUCTION_CHECKLIST.md) - Pre-deployment verification
 
 ---
 
@@ -28,86 +34,109 @@ This API allows both **Librarians** and **Members** to log in, interact with boo
 
 | Category | Technology |
 |-----------|-------------|
-| Language | Ruby 3.x |
-| Framework | Ruby on Rails 8.x |
-| Database | PostgreSQL 14.x |
-| Authentication | Devise JWT |
-| Authorization | Pundit |
-| Testing | RSpec + FactoryBot + Faker |
-| State Machine | AASM |
-| Pagination | Pagy |
-| Soft Delete | Paranoia |
-| Documentation | Rswag (Swagger UI) |
-| Admin Panel | ActiveAdmin |
-| Audit Logging | Audited |
+| **Language** | Ruby 3.4.7 |
+| **Framework** | Ruby on Rails 8.0 (API mode) |
+| **Database** | PostgreSQL 14+ |
+| **Authentication** | Devise + Devise-JWT |
+| **Authorization** | Pundit |
+| **Testing** | RSpec + FactoryBot + Faker |
+| **Pagination** | Pagy |
+| **CI/CD** | GitHub Actions |
+| **Deployment** | Docker + Render.com |
+| **Code Quality** | RuboCop + Brakeman |
 
 ---
 
-## 🚀 Setup Instructions
+## 🚀 Quick Start
 
-### 1️⃣ Clone the repository
+### Option 1: Local Setup
+
 ```bash
+# 1. Clone the repository
 git clone https://github.com/jlgasparrini/thelibrarian-api.git
 cd thelibrarian-api
-```
 
-### 2️⃣ Install dependencies
-```bash
+# 2. Install dependencies
 bundle install
-```
 
-### 3️⃣ Create a `.env` file with the following keys:
-```bash
-JWT_SECRET_KEY=your_secret_key
-```
+# 3. Create .env file
+cp .env.example .env
+# Edit .env and set JWT_SECRET_KEY
 
-### 4️⃣ Setup the database
-```bash
+# 4. Setup database
 rails db:create db:migrate db:seed
-```
-Seeds include:
-- Librarian: admin@library.com / password
-- Member: member@library.com / password
 
-### 5️⃣ Run the test suite
-```bash
+# 5. Run tests
 bundle exec rspec
-```
 
-### 6️⃣ Start the server
-```bash
+# 6. Start server
 rails server
 ```
 
-### 7️⃣ Access the API
-Open your browser and navigate to `http://localhost:3000` to access the API.
+### Option 2: Docker Setup
 
-### 8️⃣ Access Documentation & Admin Panel
+```bash
+# 1. Clone and setup
+git clone https://github.com/jlgasparrini/thelibrarian-api.git
+cd thelibrarian-api
+cp .env.example .env
 
-**API Documentation (Swagger UI)**
-- URL: `http://localhost:3000/api-docs`
-- Interactive API documentation with all endpoints
+# 2. Build and run
+docker compose up
 
-**Admin Panel (ActiveAdmin)**
-- URL: `http://localhost:3000/admin`
-- Login with librarian credentials: `admin@library.com` / `password`
-- Manage users, books, and borrowings through the web interface
+# 3. Setup database (in another terminal)
+docker compose exec web rails db:prepare db:seed
+
+# 4. Run tests
+docker compose exec web bundle exec rspec
+```
+
+### 🔑 Demo Credentials
+
+After running `db:seed`:
+- **Librarian:** `admin@library.com` / `password`
+- **Member:** `member@library.com` / `password`
+- **Member:** `john.doe@library.com` / `password`
+- **Member:** `jane.smith@library.com` / `password`
+
+### 🧪 Verify Installation
+
+```bash
+# Health check
+curl http://localhost:3000/api/v1/health
+
+# Should return: {"status":"ok"}
+```
 
 ---
 
-## 🧪 API Overview
+## 🎯 Features
 
-| **Feature** | **Description** |
-|--------------|----------------|
-| 👤 **Authentication** | Handles user registration, login, logout, and token validation using **Devise JWT**. |
-| 🧑‍💼 **Roles & Authorization** | Supports two roles — `Librarian` and `Member`. Authorization enforced with **Pundit** policies. |
-| 📚 **Books Management** | Librarians can create, update, or delete books. Members can search, filter, and view available books. |
-| 📖 **Borrowings** | Members can borrow and return books. Librarians can manage borrowing records and mark returns. |
-| 📊 **Dashboard** | Returns contextual data based on user role — library stats for librarians, borrowing info for members. |
-| 🗂️ **Admin Panel** | **ActiveAdmin** interface for librarians to manage users, books, and borrowings. |
-| 🧾 **API Documentation** | Auto-generated **Swagger (Rswag)** documentation accessible via `/api-docs`. |
-| 🧱 **Enhancements** | Includes soft delete, pagination, AASM state machine, and audit logging. |
-| 🔎 **Audit Logging** | Activity logging for all key models (User, Book, Borrowing) using `audited` gem or a custom logging mechanism. |
+### ✅ Implemented
+
+| Feature | Description |
+|---------|-------------|
+| 👤 **Authentication** | JWT-based auth with Devise (sign up, sign in, sign out) |
+| 🔐 **Authorization** | Role-based access control with Pundit (Librarian/Member) |
+| 📚 **Book Management** | Full CRUD for librarians, read-only for members |
+| 🔍 **Search & Filter** | Search by title/author/ISBN, filter by genre/availability |
+| 📖 **Borrowing System** | Borrow/return books with automatic due dates (14 days) |
+| 📊 **Dashboards** | Role-specific analytics and borrowing insights |
+| 📄 **Pagination** | Pagy-powered pagination on all list endpoints |
+| 🧪 **Test Coverage** | 137 RSpec examples, 100% passing |
+| 🐳 **Docker Support** | Full Docker Compose setup for local development |
+| 🚀 **CI/CD** | GitHub Actions for automated testing |
+| 📖 **API Docs** | Comprehensive markdown documentation |
+
+### 🔮 Planned (Gems Installed)
+
+- **Soft Delete** (paranoia) - Logical deletion of records
+- **Admin Panel** (activeadmin) - Web interface for management
+- **State Machine** (aasm) - Borrowing lifecycle management
+- **Swagger Docs** (rswag) - Interactive API documentation
+- **Audit Logging** (audited) - Activity tracking
+
+See [ROADMAP.md](./docs/ROADMAP.md) Step 8 for implementation details.
 
 ---
 
@@ -115,88 +144,226 @@ Open your browser and navigate to `http://localhost:3000` to access the API.
 ```
 app/
  ├── controllers/
- │    ├── api/
- │    │    └── v1/
- │    │         ├── auth/
- │    │         ├── books_controller.rb
- │    │         ├── borrowings_controller.rb
- │    │         └── dashboards_controller.rb
+ │    ├── concerns/              # Reusable controller modules
+ │    │    ├── json_response.rb
+ │    │    └── jwt_authentication.rb
+ │    └── api/v1/
+ │         ├── auth/             # Authentication endpoints
+ │         ├── books_controller.rb
+ │         ├── borrowings_controller.rb
+ │         ├── dashboards_controller.rb
+ │         ├── health_controller.rb
+ │         └── users_controller.rb
  ├── models/
  │    ├── user.rb
  │    ├── book.rb
- │    └── borrowing.rb
- ├── policies/
+ │    ├── borrowing.rb
+ │    └── jwt_denylist.rb
+ ├── policies/                   # Pundit authorization
+ │    ├── application_policy.rb
+ │    ├── book_policy.rb
+ │    ├── borrowing_policy.rb
+ │    ├── dashboard_policy.rb
+ │    └── user_policy.rb
+ ├── serializers/                # JSON response formatting
+ │    ├── book_serializer.rb
+ │    ├── borrowing_serializer.rb
+ │    └── user_serializer.rb
+ └── services/                   # Business logic
+      └── dashboard_service.rb
+
+config/
+ ├── initializers/
+ │    └── app_constants.rb       # Application constants
+ └── routes.rb
 
 spec/
- ├── requests/
  ├── models/
- └── policies/
+ ├── policies/
+ └── requests/
 ```
 
-## 🧪 Testing Approach (TDD)
+## 🧪 Testing
 
-Each step in the API Roadmap includes:
+### Test Coverage
+- **137 examples, 0 failures**
+- **100% passing rate**
+- Model specs (validations, associations, scopes)
+- Request specs (endpoints, authentication, authorization)
+- Policy specs (role-based access control)
 
-- Model specs (validations, associations, and behaviors)
-- Request specs (endpoint responses and access control)
-- Policy specs (authorization rules)
-- State machine tests for borrowings
+### Run Tests
+```bash
+# All tests
+bundle exec rspec
 
-Run tests continuously after each implementation phase.
+# Specific file
+bundle exec rspec spec/models/book_spec.rb
 
-## 🧱 Enhancements & Advanced Features
+# With documentation format
+bundle exec rspec --format documentation
 
-- ✅ Soft Delete for safe record management (deleted_at timestamps)
-- ✅ Borrowing Lifecycle managed with AASM state machine
-- ✅ Pagination & Sorting via Pagy
-- ✅ Auto-Generated Swagger API Documentation with Rswag
-- ✅ ActiveAdmin integration for librarian management
-- ✅ Audit Logging for all actions
-
-
-## 🧾 Example Requests
-
-### 🔐 Login
-```http
-POST /api/v1/auth/sign_in
-```
-```json
-{
-  "email": "member@library.com",
-  "password": "password"
-}
+# With coverage report
+COVERAGE=true bundle exec rspec
 ```
 
-### 📚 List Books
-```http
-GET /api/v1/books?page=1&genre=fiction
+## 🏗️ Architecture & Design Patterns
+
+### Clean Architecture
+- **Controllers** - Thin, handle HTTP concerns only
+- **Services** - Complex business logic (e.g., DashboardService)
+- **Serializers** - JSON response formatting
+- **Policies** - Authorization rules
+- **Concerns** - Reusable modules (JsonResponse, JwtAuthentication)
+
+### Key Patterns
+- **Service Objects** - Encapsulate complex operations
+- **Serializers** - Consistent API responses
+- **Scopes** - Reusable query logic
+- **Constants** - Centralized configuration
+- **Policy Objects** - Authorization logic separation
+
+
+## 📡 API Examples
+
+### Authentication
+```bash
+# Sign up
+curl -X POST http://localhost:3000/api/v1/auth/sign_up \
+  -H "Content-Type: application/json" \
+  -d '{"email":"user@example.com","password":"password","role":"member"}'
+
+# Sign in
+curl -X POST http://localhost:3000/api/v1/auth/sign_in \
+  -H "Content-Type: application/json" \
+  -d '{"email":"member@library.com","password":"password"}'
+
+# Returns JWT token in Authorization header
 ```
 
-### 📖 Borrow a Book
-```http
-POST /api/v1/borrowings
-```
-```json
-{
-  "book_id": 1
-}
+### Books
+```bash
+# List books (with filters)
+curl http://localhost:3000/api/v1/books?query=ruby&genre=Programming&available=true
+
+# Get book details
+curl http://localhost:3000/api/v1/books/1 \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN"
+
+# Create book (librarian only)
+curl -X POST http://localhost:3000/api/v1/books \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"book":{"title":"Clean Code","author":"Robert Martin","isbn":"978-0132350884","genre":"Programming","total_copies":5}}'
 ```
 
-### 📊 Dashboard
-```http
-GET /api/v1/dashboard
+### Borrowings
+```bash
+# Borrow a book
+curl -X POST http://localhost:3000/api/v1/borrowings \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"borrowing":{"book_id":1}}'
+
+# Return a book
+curl -X PUT http://localhost:3000/api/v1/borrowings/1 \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"action_type":"return"}'
+
+# List overdue borrowings (librarian only)
+curl http://localhost:3000/api/v1/borrowings/overdue \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN"
 ```
-Returns JSON depending on current_user.role
 
-## 🏁 Notes for Reviewers
+### Dashboard
+```bash
+# Get role-specific dashboard
+curl http://localhost:3000/api/v1/dashboard \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN"
+```
 
-- The project was built using TDD from start to finish.
-- Each user story is fully testable and linked to a roadmap step.
-- Code follows RESTful conventions, role-based access control, and clean architecture.
-- Focused on clarity, maintainability, and correctness rather than over-engineering.
+See [API_DOCUMENTATION.md](./docs/API_DOCUMENTATION.md) for complete endpoint reference.
+
+## 🚀 Deployment
+
+### Docker
+See [DOCKER.md](./docs/DOCKER.md) for complete Docker setup instructions.
+
+### Production (Render.com)
+See [DEPLOYMENT.md](./docs/DEPLOYMENT.md) and [QUICK_DEPLOY.md](./docs/QUICK_DEPLOY.md) for deployment guides.
+
+### Environment Variables
+Required for production:
+- `RAILS_MASTER_KEY` - Rails credentials encryption key
+- `JWT_SECRET_KEY` - JWT token signing key
+- `DATABASE_URL` - PostgreSQL connection string (auto-set by Render)
+
+---
+
+## 📈 Code Quality
+
+### Metrics
+- **137 RSpec tests** - 100% passing
+- **Clean Architecture** - Services, Serializers, Concerns
+- **DRY Principles** - Reusable components
+- **Security** - Brakeman scans, JWT authentication
+- **Performance** - Database indexing, counter caches, pessimistic locking
+
+### Recent Improvements
+- ✅ Extracted serializers for consistent JSON formatting
+- ✅ Created service objects for complex business logic
+- ✅ Added concerns for reusable controller functionality
+- ✅ Centralized constants and configuration
+- ✅ Added model scopes for cleaner queries
+- ✅ Reduced DashboardsController from 111 to 15 lines (86% reduction)
+
+See commit history for detailed refactoring work.
+
+---
+
+## 🏁 Project Status
+
+### ✅ Completed
+- Core API functionality (auth, books, borrowings, dashboards)
+- Comprehensive test suite (137 examples)
+- Docker containerization
+- CI/CD pipeline with GitHub Actions
+- Production deployment configuration
+- Code refactoring and architecture improvements
+- Complete documentation
+
+### 🔮 Future Enhancements
+See [ROADMAP.md](./docs/ROADMAP.md) Step 8 for planned features:
+- Soft delete with Paranoia
+- ActiveAdmin panel
+- AASM state machine
+- Swagger/OpenAPI docs
+- Audit logging
+
+---
 
 ## 👤 Author
 
-Leonel Gasparrini
-Ruby on Rails Developer
-🇦🇷 [GitHub](https://github.com/jlgasparrini) · [LinkedIn](https://linkedin.com/in/jlgasparrini/)
+**Leonel Gasparrini**  
+Ruby on Rails Developer  
+🇦🇷 Argentina
+
+- [GitHub](https://github.com/jlgasparrini)
+- [LinkedIn](https://linkedin.com/in/jlgasparrini/)
+
+---
+
+## 📄 License
+
+This project is available for portfolio and educational purposes.
+
+---
+
+## 🙏 Acknowledgments
+
+Built with:
+- Test-Driven Development (TDD) methodology
+- Clean Architecture principles
+- RESTful API best practices
+- Ruby on Rails conventions

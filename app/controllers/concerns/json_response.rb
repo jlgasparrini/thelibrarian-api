@@ -10,7 +10,7 @@ module JsonResponse
     end
 
     response_key = key || collection.model_name.plural
-    
+
     render json: {
       response_key => serialized_data,
       pagination: pagy_metadata(pagy)

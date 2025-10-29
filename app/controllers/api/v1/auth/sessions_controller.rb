@@ -3,7 +3,7 @@ module Api
     module Auth
       class SessionsController < Devise::SessionsController
         include JwtAuthentication
-        
+
         respond_to :json
         skip_before_action :verify_signed_out_user, only: :destroy
 

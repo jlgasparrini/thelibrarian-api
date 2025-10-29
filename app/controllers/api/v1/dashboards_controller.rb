@@ -5,7 +5,7 @@ module Api
 
       def show
         authorize :dashboard, :show?
-        
+
         dashboard_data = DashboardService.new(current_user).call
         render json: dashboard_data, status: :ok
       end

@@ -66,7 +66,7 @@ module Api
             render_errors(@borrowing.errors.full_messages)
           end
         else
-          render_errors(["Invalid action"], status: :bad_request)
+          render_errors([ "Invalid action" ], status: :bad_request)
         end
       end
 
