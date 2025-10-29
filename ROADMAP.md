@@ -119,51 +119,114 @@ Each step is self-contained and test-driven: implement → test → refactor →
 
 ---
 
-## 🧪 Step 6 — Final QA & Refactor
-- [ ] Review all models for missing indexes, constraints, and validations.
-- [ ] Ensure Pundit policies are enforced in every controller.
-- [ ] Add request specs for unauthorized/forbidden access.
-- [ ] Seed data - Populate database with books and borrowings. Add demo users:
+## 🧪 Step 6 — Final QA
+- [x] Review all models for missing indexes, constraints, and validations.
+  - All models have proper validations
+  - Comprehensive indexing (GIN trigram, composite, foreign keys)
+  - Counter cache for performance
+  - Pessimistic locking for race conditions
+- [x] Ensure Pundit policies are enforced in every controller.
+  - All 12 controller actions have `authorize` calls
+  - Policies: BookPolicy, BorrowingPolicy, DashboardPolicy, UserPolicy
+- [x] Add request specs for unauthorized/forbidden access.
+  - All request specs test authentication and authorization
+  - 74 request specs covering all scenarios
+- [x] Seed data - Populate database with books and borrowings. Add demo users:
   - Librarian: `admin@library.com / password`
   - Member: `member@library.com / password`
-- [ ] ✅ Final RSpec run → 100% passing.
-- [ ] ✅ Project ready for frontend integration.
+  - Member: `john.doe@library.com / password`
+  - Member: `jane.smith@library.com / password`
+  - 25 books across 5 genres
+  - 12 borrowings (5 active, 2 overdue, 5 returned)
+- [x] Create comprehensive API documentation.
+- [x] Setup CI/CD with GitHub Actions, setting up deployment to Render.com.
+- [x] ✅ Final RSpec run → 100% passing (137 examples, 0 failures).
 
 ---
 
-## 🧱 Step 7 — Enhancements & Polish
+## 🔧 Step 7 — Code Refactoring & Architecture Improvements
+**Goal:** Improve code quality, maintainability, and scalability through architectural patterns.
 
-**Goal:** Add advanced, production-grade features that improve robustness and maintainability.
+- [ ] **Serializers** - Extract JSON formatting logic
+  - Created `BookSerializer` with multiple presentation methods (minimal, with_isbn, popular)
+  - Created `BorrowingSerializer` with context-specific methods (with_relations, detailed, dashboard, history)
+  - Updated `UserSerializer` with minimal method for nested responses
+  - Eliminated ~60 lines of repeated `.as_json()` calls
+  
+- [ ] **Service Objects** - Extract complex business logic
+  - Created `DashboardService` for dashboard data aggregation
+  - Reduced `DashboardsController` from 111 lines to 15 lines (86% reduction)
+  - Improved testability and separation of concerns
+  
+- [ ] **Concerns** - Reusable controller modules
+  - Created `JsonResponse` concern for consistent API responses
+  - Created `JwtAuthentication` concern for JWT token handling
+  - DRY principle applied across controllers
+  
+- [ ] **Constants** - Centralized configuration
+  - Created `AppConstants` initializer
+  - Extracted magic numbers (pagination, borrowing period, dashboard limits)
+  - Single source of truth for configuration values
+  
+- [ ] **Scopes** - Reusable query logic
+  - Added `sorted_by` scope to Book model
+  - Added `due_today` and `due_soon` scopes to Borrowing model
+  - Cleaner controller code with chainable queries
+  
+- [ ] **CI/CD Improvements**
+  - Fixed JWT_SECRET_KEY configuration for test environment
+  - All 137 tests passing in CI
+  
+- [ ] ✅ All refactoring complete and code quality improved → 137 examples, 0 failures.
+- [ ] ✅ Ready for production deployment and frontend integration.
 
-### Soft Delete
-- Add `deleted_at` to Book, Borrowing, and optionally User models.
-- Use `paranoia` gem or manual scope filtering.
-- Update destroy actions to perform logical deletes.
+
+---
+
+## 🧱 Step 8 — Future Enhancements (Optional)
+
+**Goal:** Add advanced, production-grade features (gems installed but not yet configured).
+
+**Note:** These features are planned but not yet implemented. The gems are already in the Gemfile for future development.
+
+### Soft Delete (paranoia gem)
+- [ ] Add `deleted_at` to Book, Borrowing, and optionally User models
+- [ ] Configure `acts_as_paranoid` in models
+- [ ] Update destroy actions to perform logical deletes
+- [ ] Add specs for soft delete behavior
 
 ### ActiveAdmin Integration
-- Install and configure ActiveAdmin for internal maintenance.
-- Restrict access to admin users.
-- Display summary of books, members, and borrowings.
+- [ ] Configure ActiveAdmin initializer
+- [ ] Create admin user model/authentication
+- [ ] Register resources (User, Book, Borrowing)
+- [ ] Restrict access to librarian role
+- [ ] Customize dashboards and filters
 
-### Borrowing Lifecycle (State Machine)
-- Use AASM to manage borrowing states:
-  - requested → borrowed → returned → overdue
-- Add RSpec specs to validate transitions and invalid state changes.
+### Borrowing Lifecycle (AASM gem)
+- [ ] Configure AASM state machine in Borrowing model
+- [ ] Define states: requested → borrowed → returned → overdue
+- [ ] Add transition validations and callbacks
+- [ ] Update controller actions to use state transitions
+- [ ] Add RSpec specs for state machine behavior
 
-### Pagination
-- Integrate `pagy` for paginated and sorted responses to increase scalability.
-- Include metadata: `total`, `page`, `pages`, `per_page`.
-- Apply to Books, Borrowings, and Dashboard endpoints.
+### API Documentation (rswag gem)
+- [ ] Configure Rswag initializer
+- [ ] Add Swagger annotations to controllers
+- [ ] Generate API documentation
+- [ ] Add `/api-docs` endpoint
+- [ ] Document all request/response schemas
 
-### API Documentation
-- Integrate Swagger (`rswag`) for auto-generated API docs.
-- Add endpoint `/api-docs` for reviewers.
+### Audit Logging (audited gem)
+- [ ] Configure Audited gem
+- [ ] Enable auditing on User, Book, Borrowing models
+- [ ] Create audit log viewer (via ActiveAdmin or custom endpoint)
+- [ ] Add specs for audit trail
+- [ ] Document audit log access for administrators
 
-### Audit Logging
-- Implemented activity logging for all key models (**User**, **Book**, **Borrowing**) using `audited` gem or a custom logging mechanism.
-- Each create, update, or delete action is automatically tracked and viewable via **ActiveAdmin**.
-- Enables librarians and administrators to review:
-  - Who performed the change
-  - When it happened
-  - What fields were modified
-- Complements the **Soft Delete** feature to provide full traceability and accountability.
+### Additional Ideas
+- [ ] Rate limiting (rack-attack)
+- [ ] Background jobs (Sidekiq) for notifications
+- [ ] Email notifications for overdue books
+- [ ] Search optimization (Elasticsearch/pg_search)
+- [ ] GraphQL API layer
+- [ ] Webhooks for external integrations

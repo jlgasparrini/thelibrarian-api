@@ -12,3 +12,7 @@
 # Ignore environment files.
 /.env
 /.tool-versions
+
+# Ignore master key for decrypting credentials and more.
+/config/master.key
+/config/credentials/*.key
