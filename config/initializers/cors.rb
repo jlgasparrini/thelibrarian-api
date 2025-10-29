@@ -7,7 +7,14 @@
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins "*" # In production, replace with your frontend domain
+    # Use environment variable for production, allow localhost for development
+    origins_list = if Rails.env.production?
+      ENV.fetch("CORS_ORIGINS", "").split(",").map(&:strip)
+    else
+      [ "http://localhost:3001", "http://localhost:5173", "http://localhost:3000" ]
+    end
+
+    origins origins_list
 
     resource "*",
       headers: :any,
