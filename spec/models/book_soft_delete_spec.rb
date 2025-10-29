@@ -47,9 +47,9 @@ RSpec.describe Book, type: :model do
       it 'returns only soft deleted books' do
         deleted_book = create(:book, title: 'Deleted Book')
         active_book = create(:book, title: 'Active Book')
-        
+
         deleted_book.destroy
-        
+
         expect(Book.only_deleted).to include(deleted_book)
         expect(Book.only_deleted).not_to include(active_book)
       end
@@ -68,7 +68,7 @@ RSpec.describe Book, type: :model do
       it 'allows creating a book with same ISBN after soft delete' do
         isbn = book.isbn
         book.destroy
-        
+
         new_book = build(:book, isbn: isbn)
         expect(new_book).to be_valid
       end

@@ -47,9 +47,9 @@ RSpec.describe User, type: :model do
       it 'returns only soft deleted users' do
         deleted_user = create(:user, :member, email: 'deleted@example.com')
         active_user = create(:user, :member, email: 'active@example.com')
-        
+
         deleted_user.destroy
-        
+
         expect(User.only_deleted).to include(deleted_user)
         expect(User.only_deleted).not_to include(active_user)
       end
@@ -66,7 +66,7 @@ RSpec.describe User, type: :model do
       it 'preserves borrowing history after user deletion' do
         borrowing_id = borrowing.id
         user.destroy
-        
+
         deleted_borrowing = Borrowing.with_deleted.find(borrowing_id)
         expect(deleted_borrowing.user_id).to eq(user.id)
       end
@@ -76,7 +76,7 @@ RSpec.describe User, type: :model do
       it 'allows creating a user with same email after soft delete' do
         email = user.email
         user.destroy
-        
+
         new_user = build(:user, :member, email: email)
         expect(new_user).to be_valid
       end
@@ -91,10 +91,10 @@ RSpec.describe User, type: :model do
         email = 'duplicate@example.com'
         user1 = create(:user, :member, email: email)
         user1.destroy
-        
+
         user2 = create(:user, :member, email: email)
         user2.destroy
-        
+
         expect(User.only_deleted.where(email: email).count).to eq(2)
       end
     end
@@ -149,10 +149,10 @@ RSpec.describe User, type: :model do
     describe 'Devise integration' do
       it 'prevents deleted users from signing in' do
         user.destroy
-        
+
         # Attempt to find user for authentication
         found_user = User.find_for_database_authentication(email: user.email)
-        
+
         # Should not find deleted user in default scope
         expect(found_user).to be_nil
       end

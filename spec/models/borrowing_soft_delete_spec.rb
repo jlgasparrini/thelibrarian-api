@@ -49,9 +49,9 @@ RSpec.describe Borrowing, type: :model do
       it 'returns only soft deleted borrowings' do
         deleted_borrowing = create(:borrowing, user: user, book: book)
         active_borrowing = create(:borrowing, user: user, book: create(:book))
-        
+
         deleted_borrowing.destroy
-        
+
         expect(Borrowing.only_deleted).to include(deleted_borrowing)
         expect(Borrowing.only_deleted).not_to include(active_borrowing)
       end
