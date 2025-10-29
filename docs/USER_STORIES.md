@@ -1,8 +1,8 @@
 # 📚 Backend User Stories
 
 ## 1. 👤 Authentication & Roles
-- [ ] **As a Member**, I want to register, log in, and log out.  
-- [ ] **As a Librarian**, I want to log in, and log out.  
+- [x] **As a Member**, I want to register, log in, and log out.  
+- [x] **As a Librarian**, I want to log in, and log out.  
 
 **Acceptance Criteria:**
 - Using Devise JWT users can sign up, log in, and log out.
@@ -21,9 +21,9 @@
 ---
 
 ## 2. 📚 Book Management
-- [ ] **As a Librarian**, I want to add a new book with details like title, author, genre, ISBN, and total copies.  
-- [ ] **As a Librarian**, I want to edit or delete book details.  
-- [ ] **As a User**, I want to search books by title, author, or genre.  
+- [x] **As a Librarian**, I want to add a new book with details like title, author, genre, ISBN, and total copies.  
+- [x] **As a Librarian**, I want to edit or delete book details.  
+- [x] **As a User**, I want to search books by title, author, or genre.  
 
 **Acceptance Criteria:**
 - Only Librarians can create, update, or delete books.
@@ -50,9 +50,9 @@
 ---
 
 ## 3. 📖 Borrowing and Returning Books
-- [ ] **As a Member**, I want to borrow a book if copies are available and if it was not borrowed previously by me.  
-- [ ] **As a Member**, I want to return a book if it was borrowed by me.  
-- [ ] **As a Librarian**, I want to mark books as returned so that the catalog remains accurate.  
+- [x] **As a Member**, I want to borrow a book if copies are available and if it was not borrowed previously by me.  
+- [x] **As a Member**, I want to return a book if it was borrowed by me.  
+- [x] **As a Librarian**, I want to mark books as returned so that the catalog remains accurate.  
 
 **Acceptance Criteria:**
 - Only Members can create borrowings and a member cannot borrow the same book twice concurrently.
@@ -76,9 +76,9 @@
 
 ---
 
-## 4. 📊 Dashboard
-- [ ] **As a Librarian**, I want to view a dashboard with key metrics so that I can monitor the library’s overall status.  
-- [ ] **As a Member**, I want to view my borrowed books and their due dates so that I can track my loans.  
+## 4. Dashboard
+- [x] **As a Librarian**, I want to view a dashboard with key metrics so that I can monitor the library's overall status.  
+- [x] **As a Member**, I want to view my borrowed books and their due dates so that I can track my loans.  
 
 **Acceptance Criteria:**
 - Librarian dashboard shows:

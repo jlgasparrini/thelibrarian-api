@@ -147,38 +147,38 @@ Each step is self-contained and test-driven: implement → test → refactor →
 ## 🔧 Step 7 — Code Refactoring & Architecture Improvements
 **Goal:** Improve code quality, maintainability, and scalability through architectural patterns.
 
-- [ ] **Serializers** - Extract JSON formatting logic
+- [x] **Serializers** - Extract JSON formatting logic
   - Created `BookSerializer` with multiple presentation methods (minimal, with_isbn, popular)
   - Created `BorrowingSerializer` with context-specific methods (with_relations, detailed, dashboard, history)
   - Updated `UserSerializer` with minimal method for nested responses
   - Eliminated ~60 lines of repeated `.as_json()` calls
   
-- [ ] **Service Objects** - Extract complex business logic
+- [x] **Service Objects** - Extract complex business logic
   - Created `DashboardService` for dashboard data aggregation
   - Reduced `DashboardsController` from 111 lines to 15 lines (86% reduction)
   - Improved testability and separation of concerns
   
-- [ ] **Concerns** - Reusable controller modules
+- [x] **Concerns** - Reusable controller modules
   - Created `JsonResponse` concern for consistent API responses
   - Created `JwtAuthentication` concern for JWT token handling
   - DRY principle applied across controllers
   
-- [ ] **Constants** - Centralized configuration
+- [x] **Constants** - Centralized configuration
   - Created `AppConstants` initializer
   - Extracted magic numbers (pagination, borrowing period, dashboard limits)
   - Single source of truth for configuration values
   
-- [ ] **Scopes** - Reusable query logic
+- [x] **Scopes** - Reusable query logic
   - Added `sorted_by` scope to Book model
   - Added `due_today` and `due_soon` scopes to Borrowing model
   - Cleaner controller code with chainable queries
   
-- [ ] **CI/CD Improvements**
+- [x] **CI/CD Improvements**
   - Fixed JWT_SECRET_KEY configuration for test environment
   - All 137 tests passing in CI
   
-- [ ] ✅ All refactoring complete and code quality improved → 137 examples, 0 failures.
-- [ ] ✅ Ready for production deployment and frontend integration.
+- [x] ✅ All refactoring complete and code quality improved → 137 examples, 0 failures.
+- [x] ✅ Ready for production deployment and frontend integration.
 
 
 ---

@@ -15,4 +15,12 @@ class UserSerializer
       }
     }
   end
+
+  # Minimal version for nested responses
+  def self.minimal(user)
+    {
+      id: user.id,
+      email: user.email
+    }
+  end
 end

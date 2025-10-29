@@ -1,6 +1,8 @@
 module Api
   module V1
     class BorrowingsController < ApplicationController
+      include JsonResponse
+
       before_action :authenticate_user!
       before_action :set_borrowing, only: [ :show, :update ]
 
@@ -18,17 +20,21 @@ module Api
         authorize @borrowings
 
         # Pagination
-        pagy, borrowings = pagy(@borrowings, items: params[:per_page] || 25)
+        pagy, borrowings = pagy(@borrowings, items: params[:per_page] || AppConstants::DEFAULT_PER_PAGE)
 
-        render json: {
-          borrowings: borrowings.as_json(include: { book: { only: [ :id, :title, :author ] }, user: { only: [ :id, :email ] } }),
-          pagination: pagy_metadata(pagy)
-        }, status: :ok
+        render_paginated_collection(
+          borrowings,
+          pagy,
+          serializer: ->(b) { BorrowingSerializer.with_relations(b) }
+        )
       end
 
       def show
         authorize @borrowing
-        render json: { borrowing: @borrowing.as_json(include: { book: { only: [ :id, :title, :author, :isbn ] }, user: { only: [ :id, :email ] } }) }, status: :ok
+        render_resource(
+          BorrowingSerializer.detailed(@borrowing),
+          key: :borrowing
+        )
       end
 
       def create
@@ -36,9 +42,13 @@ module Api
         authorize @borrowing
 
         if @borrowing.save
-          render json: { borrowing: @borrowing, message: "Book borrowed successfully" }, status: :created
+          render_created(
+            BorrowingSerializer.detailed(@borrowing),
+            key: :borrowing,
+            message: "Book borrowed successfully"
+          )
         else
-          render json: { errors: @borrowing.errors.full_messages }, status: :unprocessable_content
+          render_errors(@borrowing.errors.full_messages)
         end
       end
 
@@ -47,12 +57,16 @@ module Api
 
         if params[:action_type] == "return"
           if @borrowing.return_book!
-            render json: { borrowing: @borrowing, message: "Book returned successfully" }, status: :ok
+            render_resource(
+              BorrowingSerializer.detailed(@borrowing),
+              key: :borrowing,
+              message: "Book returned successfully"
+            )
           else
-            render json: { errors: @borrowing.errors.full_messages }, status: :unprocessable_content
+            render_errors(@borrowing.errors.full_messages)
           end
         else
-          render json: { error: "Invalid action" }, status: :bad_request
+          render_errors([ "Invalid action" ], status: :bad_request)
         end
       end
 
@@ -61,12 +75,13 @@ module Api
         authorize @borrowings
 
         # Pagination
-        pagy, borrowings = pagy(@borrowings, items: params[:per_page] || 25)
+        pagy, borrowings = pagy(@borrowings, items: params[:per_page] || AppConstants::DEFAULT_PER_PAGE)
 
-        render json: {
-          borrowings: borrowings.as_json(include: { book: { only: [ :id, :title, :author ] }, user: { only: [ :id, :email ] } }),
-          pagination: pagy_metadata(pagy)
-        }, status: :ok
+        render_paginated_collection(
+          borrowings,
+          pagy,
+          serializer: ->(b) { BorrowingSerializer.with_relations(b) }
+        )
       end
 
       private
