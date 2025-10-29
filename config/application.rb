@@ -32,5 +32,9 @@ module ThelibrarianApi
     # Enable ActionController::Helpers for ActiveAdmin compatibility
     # This adds helper_method support needed by inherited_resources
     config.action_controller.include_all_helpers = true
+
+    # Enable sessions and cookies for Devise compatibility
+    config.middleware.use ActionDispatch::Cookies
+    config.middleware.use ActionDispatch::Session::CookieStore
   end
 end
