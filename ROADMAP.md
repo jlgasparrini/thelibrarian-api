@@ -46,22 +46,22 @@ Each step is self-contained and test-driven: implement → test → refactor →
 ## 📚 Step 3 — Book Management
 **Goal:** Allow Librarians to manage books, and Members to view/search them.
 
-- [ ] Generate `Book` model with attributes:
+- [x] Generate `Book` model with attributes:
   - title, author, genre, isbn, total_copies, available_copies
-- [ ] Validate presence and uniqueness where needed.
-- [ ] Create controller `BooksController`.
-- [ ] Implement endpoints:
-  - [ ] `GET /api/v1/books`
-  - [ ] `GET /api/v1/books/:id`
-  - [ ] `POST /api/v1/books`
-  - [ ] `PUT /api/v1/books/:id`
-  - [ ] `DELETE /api/v1/books/:id`
-- [ ] Add search, and sorting (params: `title`, `author`, `genre`, `page`, `sort`).
-- [ ] Apply Pundit policies:
+- [x] Validate presence and uniqueness where needed.
+- [x] Create controller `BooksController`.
+- [x] Implement endpoints:
+  - [x] `GET /api/v1/books`
+  - [x] `GET /api/v1/books/:id`
+  - [x] `POST /api/v1/books`
+  - [x] `PUT /api/v1/books/:id`
+  - [x] `DELETE /api/v1/books/:id`
+- [x] Add search, and sorting (params: `query`, `genre`, `available`, `sort`).
+- [x] Apply Pundit policies:
   - Librarian → full CRUD
   - Member → read only
-- [ ] Write RSpec request specs for all endpoints.
-- [ ] ✅ Run tests → all book specs passing.
+- [x] Write RSpec request specs for all endpoints.
+- [x] ✅ Run tests → all book specs passing (71 examples, 0 failures).
 
 ---
 
