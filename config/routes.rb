@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   # API routes
   namespace :api do
     namespace :v1 do
-      get 'health', to: 'health#index'
+      get "health", to: "health#index"
     end
   end
 
