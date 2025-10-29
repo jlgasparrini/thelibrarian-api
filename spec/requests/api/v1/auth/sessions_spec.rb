@@ -42,8 +42,8 @@ RSpec.describe 'Api::V1::Auth::Sessions', type: :request do
 
       it 'returns an unauthorized status' do
         post '/api/v1/auth/sign_in', params: invalid_params
-
-        expect(response).to have_http_status(:unprocessable_entity)
+        
+        expect(response).to have_http_status(:unprocessable_content)
       end
     end
   end
