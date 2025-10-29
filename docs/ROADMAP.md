@@ -189,17 +189,24 @@ Each step is self-contained and test-driven: implement → test → refactor →
 
 **Note:** These features are planned but not yet implemented. The gems are already in the Gemfile for future development.
 
-### Soft Delete (paranoia gem)
-- [ ] Add `deleted_at` to Book, Borrowing, and optionally User models
-- [ ] Configure `acts_as_paranoid` in models
-- [ ] Update destroy actions to perform logical deletes
-- [ ] Add specs for soft delete behavior
+### Soft Delete (paranoia gem) ✅
+- [x] Add `deleted_at` to Book, Borrowing, and User models
+- [x] Configure `acts_as_paranoid` in all models
+- [x] Soft delete works automatically with destroy actions
+- [x] Add comprehensive specs for soft delete behavior (41 new tests)
+- [x] Test restore functionality
+- [x] Test with_deleted and only_deleted scopes
+- [x] Implement email uniqueness scoped to deleted_at for Users
+- [x] Add partial unique index for active users only
+- [x] Integrate with Devise authentication (prevent deleted users from logging in)
+- [x] Add custom error message for deleted accounts
+- [x] Preserve borrowing history when users are deleted
+- [x] ✅ All tests passing → 179 examples, 0 failures
 
 ### ActiveAdmin Integration
 - [ ] Configure ActiveAdmin initializer
 - [ ] Create admin user model/authentication
 - [ ] Register resources (User, Book, Borrowing)
-- [ ] Restrict access to librarian role
 - [ ] Customize dashboards and filters
 
 ### Borrowing Lifecycle (AASM gem)

@@ -3,8 +3,23 @@ require 'rails_helper'
 RSpec.describe User, type: :model do
   describe 'validations' do
     it { should validate_presence_of(:email) }
-    it { should validate_uniqueness_of(:email).case_insensitive }
     it { should validate_presence_of(:role) }
+
+    describe 'email uniqueness' do
+      let(:user) { create(:user, :member, email: 'test@example.com') }
+
+      it 'validates uniqueness of email for active users' do
+        duplicate = build(:user, :member, email: user.email)
+        expect(duplicate).not_to be_valid
+        expect(duplicate.errors[:email]).to include('has already been taken')
+      end
+
+      it 'allows same email after user is soft deleted' do
+        user.destroy
+        new_user = build(:user, :member, email: user.email)
+        expect(new_user).to be_valid
+      end
+    end
   end
 
   describe 'enums' do
