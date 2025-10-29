@@ -28,5 +28,9 @@ module ThelibrarianApi
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+
+    # Enable ActionController::Helpers for ActiveAdmin compatibility
+    # This adds helper_method support needed by inherited_resources
+    config.action_controller.include_all_helpers = true
   end
 end
