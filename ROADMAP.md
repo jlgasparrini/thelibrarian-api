@@ -68,26 +68,30 @@ Each step is self-contained and test-driven: implement → test → refactor →
 ## 📖 Step 4 — Borrowing Flow
 **Goal:** Allow Members to borrow and return books.
 
-- [ ] Generate `Borrowing` model:
+- [x] Generate `Borrowing` model:
   - attributes: `user_id`, `book_id`, `borrowed_at`, `due_date`, `returned_at`
-- [ ] Add validations:
+- [x] Add validations:
   - borrowed_at, due_date presence
   - user must be Member
   - cannot borrow same book twice concurrently
-- [ ] Implement automatic behaviors:
+  - book must be available
+- [x] Implement automatic behaviors:
+  - borrowed_at defaults to Time.current
   - due_date defaults to borrowed_at + 14 days
   - available_copies decrement/increment on borrow/return
-- [ ] Create controller `BorrowingsController`.
-- [ ] Implement endpoints:
-  - [ ] `GET /api/v1/borrowings`
-  - [ ] `POST /api/v1/borrowings`
-  - [ ] `PUT /api/v1/borrowings/:id/return`
-  - [ ] `GET /api/v1/borrowings/overdue`
-- [ ] Write RSpec tests for:
+- [x] Create controller `BorrowingsController`.
+- [x] Implement endpoints:
+  - [x] `GET /api/v1/borrowings` (with status filters: active, returned, overdue)
+  - [x] `GET /api/v1/borrowings/:id`
+  - [x] `POST /api/v1/borrowings`
+  - [x] `PUT /api/v1/borrowings/:id` (return action)
+  - [x] `GET /api/v1/borrowings/overdue`
+- [x] Write RSpec tests for:
   - Borrowing creation (success/failure)
   - Returning flow
   - Overdue scope
-- [ ] ✅ Run tests → all borrowing specs passing.
+  - Authorization (members vs librarians)
+- [x] ✅ Run tests → all borrowing specs passing (72 examples, 0 failures).
 
 ---
 
