@@ -2,6 +2,8 @@ module Api
   module V1
     module Auth
       class SessionsController < Devise::SessionsController
+        include JwtAuthentication
+        
         respond_to :json
         skip_before_action :verify_signed_out_user, only: :destroy
 
@@ -16,8 +18,9 @@ module Api
 
         def respond_to_on_destroy
           if request.headers["Authorization"].present?
-            jwt_payload = JWT.decode(request.headers["Authorization"].split(" ").last, ENV["JWT_SECRET_KEY"] || Rails.application.credentials.secret_key_base).first
-            current_user = User.find(jwt_payload["sub"])
+            token = request.headers["Authorization"].split(" ").last
+            jwt_payload = decode_jwt_token(token)
+            current_user = User.find(jwt_payload["sub"]) if jwt_payload
           end
 
           if current_user

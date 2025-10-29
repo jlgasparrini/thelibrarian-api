@@ -20,6 +20,8 @@ class Borrowing < ApplicationRecord
   scope :returned, -> { where.not(returned_at: nil) }
   scope :overdue, -> { active.where("due_date < ?", Time.current) }
   scope :for_user, ->(user) { where(user: user) }
+  scope :due_today, -> { active.where("DATE(due_date) = ?", Date.today) }
+  scope :due_soon, -> { active.where("due_date <= ?", AppConstants::DUE_SOON_DAYS.days.from_now) }
 
   # Instance methods
   def returned?
@@ -41,7 +43,7 @@ class Borrowing < ApplicationRecord
   end
 
   def set_due_date
-    self.due_date ||= (borrowed_at || Time.current) + 14.days
+    self.due_date ||= (borrowed_at || Time.current) + AppConstants::BORROWING_PERIOD_DAYS.days
   end
 
   def user_must_be_member

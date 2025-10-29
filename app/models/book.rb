@@ -16,6 +16,18 @@ class Book < ApplicationRecord
   scope :search, ->(query) {
     where("title ILIKE :query OR author ILIKE :query OR isbn ILIKE :query", query: "%#{query}%") if query.present?
   }
+  scope :sorted_by, ->(sort_param) {
+    case sort_param
+    when "title"
+      order(title: :asc)
+    when "author"
+      order(author: :asc)
+    when "created_at"
+      order(created_at: :desc)
+    else
+      order(created_at: :desc)
+    end
+  }
 
   private
 

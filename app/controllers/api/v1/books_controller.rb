@@ -6,26 +6,15 @@ module Api
 
       def index
         @books = Book.all
-        @books = @books.search(params[:query]) if params[:query].present?
-        @books = @books.by_genre(params[:genre]) if params[:genre].present?
-        @books = @books.available if params[:available] == "true"
-
-        # Sorting
-        @books = case params[:sort]
-        when "title"
-          @books.order(title: :asc)
-        when "author"
-          @books.order(author: :asc)
-        when "created_at"
-          @books.order(created_at: :desc)
-        else
-          @books.order(created_at: :desc)
-        end
+                     .search(params[:query])
+                     .by_genre(params[:genre])
+                     .then { |scope| params[:available] == "true" ? scope.available : scope }
+                     .sorted_by(params[:sort])
 
         authorize @books
 
         # Pagination
-        pagy, books = pagy(@books, items: params[:per_page] || 25)
+        pagy, books = pagy(@books, items: params[:per_page] || AppConstants::DEFAULT_PER_PAGE)
 
         render json: {
           books: books,
