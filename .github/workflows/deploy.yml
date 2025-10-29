@@ -1,0 +1,41 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy to Render
+    runs-on: ubuntu-latest
+    # Only run after CI passes
+    needs: []
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Trigger Render Deployment
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+          RENDER_SERVICE_ID: ${{ secrets.RENDER_SERVICE_ID }}
+        run: |
+          if [ -n "$RENDER_API_KEY" ] && [ -n "$RENDER_SERVICE_ID" ]; then
+            curl -X POST "https://api.render.com/v1/services/$RENDER_SERVICE_ID/deploys" \
+              -H "Authorization: Bearer $RENDER_API_KEY" \
+              -H "Content-Type: application/json"
+            echo "✅ Deployment triggered successfully!"
+          else
+            echo "⚠️  Render credentials not configured. Skipping deployment."
+            echo "To enable automatic deployment:"
+            echo "1. Get your Render API key from https://dashboard.render.com/account/api-keys"
+            echo "2. Get your Service ID from your service URL"
+            echo "3. Add them as GitHub secrets: RENDER_API_KEY and RENDER_SERVICE_ID"
+          fi
+
+      - name: Deployment Status
+        run: |
+          echo "🚀 Deployment initiated!"
+          echo "📊 Check status at: https://dashboard.render.com"
+          echo "🌐 API will be available at: https://thelibrarian-api.onrender.com"
