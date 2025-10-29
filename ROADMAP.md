@@ -6,8 +6,8 @@ Each step is self-contained and test-driven: implement → test → refactor →
 ---
 
 ## 🩵 Step 1 — Project Setup
-- [ ] Initialize a new Rails API project: `rails new thelibrarian-api --api`
-- [ ] Add required gems:
+- [x] Initialize a new Rails API project: `rails new thelibrarian-api --api`
+- [x] Add required gems:
   - devise
   - devise-jwt
   - pundit
@@ -15,11 +15,11 @@ Each step is self-contained and test-driven: implement → test → refactor →
   - factory_bot_rails
   - faker
   - rack-cors
-- [ ] Configure RSpec as default test framework.
-- [ ] Create `.env` for secret keys and JWT configuration.
-- [ ] Configure CORS for React frontend.
-- [ ] Create initial home endpoint (`GET /api/v1/health`) for smoke testing.
-- [ ] ✅ Run first RSpec test confirming `/health` returns 200 OK.
+- [x] Configure RSpec as default test framework.
+- [x] Create `.env` for secret keys and JWT configuration.
+- [x] Configure CORS for React frontend.
+- [x] Create initial home endpoint (`GET /api/v1/health`) for smoke testing.
+- [x] ✅ Run first RSpec test confirming `/health` returns 200 OK.
 
 ---
 
