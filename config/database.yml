@@ -75,26 +75,5 @@ test:
 # for a full overview on how database connection configuration can be specified.
 #
 production:
-  primary:
-    <<: *default
-    database: thelibrarian_api_production
-    username: thelibrarian_api
-    password: <%= ENV["THELIBRARIAN_API_DATABASE_PASSWORD"] %>
-  cache:
-    <<: *default
-    database: thelibrarian_api_production_cache
-    username: thelibrarian_api
-    password: <%= ENV["THELIBRARIAN_API_DATABASE_PASSWORD"] %>
-    migrations_paths: db/cache_migrate
-  queue:
-    <<: *default
-    database: thelibrarian_api_production_queue
-    username: thelibrarian_api
-    password: <%= ENV["THELIBRARIAN_API_DATABASE_PASSWORD"] %>
-    migrations_paths: db/queue_migrate
-  cable:
-    <<: *default
-    database: thelibrarian_api_production_cable
-    username: thelibrarian_api
-    password: <%= ENV["THELIBRARIAN_API_DATABASE_PASSWORD"] %>
-    migrations_paths: db/cable_migrate
+  <<: *default
+  url: <%= ENV["DATABASE_URL"] %>
