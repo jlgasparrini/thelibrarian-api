@@ -10,6 +10,12 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+# Permissions needed for test result publishing
+permissions:
+  contents: read
+  checks: write
+  pull-requests: write
+
 jobs:
   scan_ruby:
     runs-on: ubuntu-latest
