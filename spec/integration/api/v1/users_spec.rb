@@ -16,13 +16,13 @@ RSpec.describe 'api/v1/users', type: :request do
               properties: {
                 id: { type: :integer },
                 email: { type: :string, format: :email },
-                role: { type: :string, enum: ['librarian', 'member'] },
+                role: { type: :string, enum: [ 'librarian', 'member' ] },
                 created_at: { type: :string, format: :datetime }
               },
-              required: ['id', 'email', 'role']
+              required: [ 'id', 'email', 'role' ]
             }
           },
-          required: ['user']
+          required: [ 'user' ]
 
         let(:Authorization) { "Bearer #{generate_jwt_token(create(:user, :member))}" }
 
