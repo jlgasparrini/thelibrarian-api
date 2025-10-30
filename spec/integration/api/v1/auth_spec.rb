@@ -6,7 +6,7 @@ RSpec.describe 'api/v1/auth', type: :request do
       tags 'Authentication'
       consumes 'application/json'
       produces 'application/json'
-      
+
       parameter name: :user, in: :body, schema: {
         type: :object,
         properties: {
@@ -25,13 +25,13 @@ RSpec.describe 'api/v1/auth', type: :request do
 
       response(201, 'user created') do
         header 'Authorization', schema: { type: :string }, description: 'JWT token'
-        
+
         schema type: :object,
           properties: {
             message: { type: :string },
             user: { '$ref' => '#/components/schemas/User' }
           }
-        
+
         let(:user) do
           {
             user: {
@@ -42,7 +42,7 @@ RSpec.describe 'api/v1/auth', type: :request do
             }
           }
         end
-        
+
         run_test! do |response|
           expect(response.headers['Authorization']).to be_present
         end
@@ -57,9 +57,9 @@ RSpec.describe 'api/v1/auth', type: :request do
               items: { type: :string }
             }
           }
-        
+
         let(:user) { { user: { email: 'invalid', password: 'short' } } }
-        
+
         run_test!
       end
     end
@@ -70,7 +70,7 @@ RSpec.describe 'api/v1/auth', type: :request do
       tags 'Authentication'
       consumes 'application/json'
       produces 'application/json'
-      
+
       parameter name: :user, in: :body, schema: {
         type: :object,
         properties: {
@@ -87,15 +87,15 @@ RSpec.describe 'api/v1/auth', type: :request do
 
       response(200, 'signed in successfully') do
         header 'Authorization', schema: { type: :string }, description: 'JWT token'
-        
+
         schema type: :object,
           properties: {
             message: { type: :string }
           }
-        
+
         let!(:existing_user) { create(:user, :member, email: 'test@example.com', password: 'password123') }
         let(:user) { { user: { email: 'test@example.com', password: 'password123' } } }
-        
+
         run_test! do |response|
           expect(response.headers['Authorization']).to be_present
         end
@@ -103,9 +103,9 @@ RSpec.describe 'api/v1/auth', type: :request do
 
       response(401, 'invalid credentials') do
         schema '$ref' => '#/components/schemas/Error'
-        
+
         let(:user) { { user: { email: 'wrong@example.com', password: 'wrongpassword' } } }
-        
+
         run_test!
       end
     end
@@ -122,10 +122,10 @@ RSpec.describe 'api/v1/auth', type: :request do
           properties: {
             message: { type: :string }
           }
-        
+
         let(:user) { create(:user, :member) }
         let(:Authorization) { "Bearer #{generate_jwt_token(user)}" }
-        
+
         run_test!
       end
 
@@ -134,9 +134,9 @@ RSpec.describe 'api/v1/auth', type: :request do
           properties: {
             message: { type: :string }
           }
-        
+
         let(:Authorization) { nil }
-        
+
         run_test!
       end
     end

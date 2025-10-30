@@ -6,7 +6,7 @@ RSpec.describe 'api/v1/books', type: :request do
       tags 'Books'
       produces 'application/json'
       security [ Bearer: [] ]
-      
+
       parameter name: :page, in: :query, type: :integer, required: false, description: 'Page number'
       parameter name: :items, in: :query, type: :integer, required: false, description: 'Items per page'
 
@@ -29,7 +29,7 @@ RSpec.describe 'api/v1/books', type: :request do
           }
 
         let(:Authorization) { "Bearer #{generate_jwt_token(create(:user, :member))}" }
-        
+
         run_test! do |response|
           data = JSON.parse(response.body)
           expect(data).to have_key('books')
@@ -39,9 +39,9 @@ RSpec.describe 'api/v1/books', type: :request do
 
       response(401, 'unauthorized') do
         schema '$ref' => '#/components/schemas/Error'
-        
+
         let(:Authorization) { nil }
-        
+
         run_test!
       end
     end
@@ -51,7 +51,7 @@ RSpec.describe 'api/v1/books', type: :request do
       consumes 'application/json'
       produces 'application/json'
       security [ Bearer: [] ]
-      
+
       parameter name: :book, in: :body, schema: {
         type: :object,
         properties: {
@@ -72,19 +72,19 @@ RSpec.describe 'api/v1/books', type: :request do
 
       response(201, 'created') do
         schema '$ref' => '#/components/schemas/Book'
-        
+
         let(:Authorization) { "Bearer #{generate_jwt_token(create(:user, :librarian))}" }
         let(:book) { { book: attributes_for(:book) } }
-        
+
         run_test!
       end
 
       response(403, 'forbidden - only librarians can create books') do
         schema '$ref' => '#/components/schemas/Error'
-        
+
         let(:Authorization) { "Bearer #{generate_jwt_token(create(:user, :member))}" }
         let(:book) { { book: attributes_for(:book) } }
-        
+
         run_test!
       end
 
@@ -96,10 +96,10 @@ RSpec.describe 'api/v1/books', type: :request do
               items: { type: :string }
             }
           }
-        
+
         let(:Authorization) { "Bearer #{generate_jwt_token(create(:user, :librarian))}" }
         let(:book) { { book: { title: '' } } }
-        
+
         run_test!
       end
     end
@@ -115,19 +115,19 @@ RSpec.describe 'api/v1/books', type: :request do
 
       response(200, 'successful') do
         schema '$ref' => '#/components/schemas/Book'
-        
+
         let(:Authorization) { "Bearer #{generate_jwt_token(create(:user, :member))}" }
         let(:id) { create(:book).id }
-        
+
         run_test!
       end
 
       response(404, 'book not found') do
         schema '$ref' => '#/components/schemas/Error'
-        
+
         let(:Authorization) { "Bearer #{generate_jwt_token(create(:user, :member))}" }
         let(:id) { 'invalid' }
-        
+
         run_test!
       end
     end
@@ -137,7 +137,7 @@ RSpec.describe 'api/v1/books', type: :request do
       consumes 'application/json'
       produces 'application/json'
       security [ Bearer: [] ]
-      
+
       parameter name: :book, in: :body, schema: {
         type: :object,
         properties: {
@@ -157,21 +157,21 @@ RSpec.describe 'api/v1/books', type: :request do
 
       response(200, 'successful') do
         schema '$ref' => '#/components/schemas/Book'
-        
+
         let(:Authorization) { "Bearer #{generate_jwt_token(create(:user, :librarian))}" }
         let(:id) { create(:book).id }
         let(:book) { { book: { title: 'Updated Title' } } }
-        
+
         run_test!
       end
 
       response(403, 'forbidden - only librarians can update books') do
         schema '$ref' => '#/components/schemas/Error'
-        
+
         let(:Authorization) { "Bearer #{generate_jwt_token(create(:user, :member))}" }
         let(:id) { create(:book).id }
         let(:book) { { book: { title: 'Updated Title' } } }
-        
+
         run_test!
       end
     end
@@ -186,19 +186,19 @@ RSpec.describe 'api/v1/books', type: :request do
           properties: {
             message: { type: :string }
           }
-        
+
         let(:Authorization) { "Bearer #{generate_jwt_token(create(:user, :librarian))}" }
         let(:id) { create(:book).id }
-        
+
         run_test!
       end
 
       response(403, 'forbidden - only librarians can delete books') do
         schema '$ref' => '#/components/schemas/Error'
-        
+
         let(:Authorization) { "Bearer #{generate_jwt_token(create(:user, :member))}" }
         let(:id) { create(:book).id }
-        
+
         run_test!
       end
     end
