@@ -451,7 +451,7 @@ DEPENDENCIES
   puma (>= 5.0)
   pundit (~> 2.3)
   rack-cors
-  rails (~> 8.0.3)
+  rails (~> 8.0.4)
   rspec-html-matchers (~> 0.10)
   rspec-rails (~> 8.0)
   rspec_junit_formatter (~> 0.6)
@@ -463,6 +463,9 @@ DEPENDENCIES
   solid_queue
   thruster
   tzinfo-data
+
+RUBY VERSION
+   ruby 3.4.7p58
 
 BUNDLED WITH
    2.6.9
