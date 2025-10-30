@@ -131,18 +131,8 @@ jobs:
           mkdir -p tmp/test-results
           bundle exec rspec \
             --format progress \
-            --format RspecJunitFormatter \
-            --out tmp/test-results/rspec.xml \
             --format html \
             --out tmp/test-results/rspec.html
-
-      - name: Upload test results (JUnit XML)
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-results
-          path: tmp/test-results/rspec.xml
-          retention-days: 30
 
       - name: Upload coverage report
         if: always()
@@ -151,14 +141,6 @@ jobs:
           name: coverage-report
           path: coverage/
           retention-days: 30
-
-      - name: Save coverage data
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-data
-          path: coverage/.last_run.json
-          retention-days: 1
 
   # Separate job for publishing test results and coverage
   # Can be easily disabled by commenting out this entire job
