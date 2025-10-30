@@ -137,6 +137,18 @@ jobs:
           path: coverage/
           retention-days: 30
       
+      - name: Check coverage files
+        if: always()
+        run: |
+          echo "Checking coverage directory:"
+          ls -la coverage/ || echo "Coverage directory not found"
+          if [ -f coverage/.last_run.json ]; then
+            echo "✅ coverage/.last_run.json exists"
+            cat coverage/.last_run.json
+          else
+            echo "❌ coverage/.last_run.json not found"
+          fi
+      
       - name: Save coverage data
         if: always()
         uses: actions/upload-artifact@v4
@@ -144,13 +156,14 @@ jobs:
           name: coverage-data
           path: coverage/.last_run.json
           retention-days: 1
+          if-no-files-found: warn
 
   # Separate job for publishing coverage report
   # Can be easily disabled by commenting out this entire job
   publish_coverage:
     runs-on: ubuntu-latest
     needs: test
-    if: always()
+    if: always() && github.event_name == 'pull_request'
 
     steps:
       - name: Download coverage data
@@ -158,6 +171,7 @@ jobs:
         with:
           name: coverage-data
           path: coverage
+        continue-on-error: true
 
       - name: Generate coverage summary
         id: coverage
@@ -194,7 +208,7 @@ jobs:
           fi
 
       - name: Comment coverage on PR
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request' && steps.coverage.outputs.percentage != '0'
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           header: coverage
