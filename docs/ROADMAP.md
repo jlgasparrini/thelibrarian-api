@@ -204,12 +204,13 @@ Each step is self-contained and test-driven: implement → test → refactor →
 - [x] Maintain version history for all changes
 - [x] ✅ All tests passing → 202 examples, 0 failures
 
-### API Documentation (rswag gem)
-- [ ] Configure Rswag initializer
-- [ ] Add Swagger annotations to controllers
-- [ ] Generate API documentation
-- [ ] Add `/api-docs` endpoint
-- [ ] Document all request/response schemas
+### API Documentation (rswag gem) ✅
+- [x] Install and configure Rswag gem
+- [x] Create swagger_helper with API metadata
+- [x] Add integration specs for Books and Auth endpoints
+- [x] Define schemas for User, Book, Borrowing, and Error responses
+- [x] Generate Swagger documentation and mount UI at `/api-docs` endpoint
+- [x] ✅ All tests passing → 219 examples, 0 failures
 
 ### Borrowing Lifecycle (AASM gem)
 - [ ] Configure AASM state machine in Borrowing model
