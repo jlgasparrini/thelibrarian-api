@@ -193,28 +193,16 @@ Each step is self-contained and test-driven: implement → test → refactor →
 - [x] Add `deleted_at` to Book, Borrowing, and User models
 - [x] Configure `acts_as_paranoid` in all models
 - [x] Soft delete works automatically with destroy actions
-- [x] Add comprehensive specs for soft delete behavior (41 new tests)
-- [x] Test restore functionality
-- [x] Test with_deleted and only_deleted scopes
-- [x] Implement email uniqueness scoped to deleted_at for Users
-- [x] Add partial unique index for active users only
-- [x] Integrate with Devise authentication (prevent deleted users from logging in)
+- [x] Add specs for soft delete behavior
 - [x] Add custom error message for deleted accounts
-- [x] Preserve borrowing history when users are deleted
 - [x] ✅ All tests passing → 179 examples, 0 failures
 
-### ActiveAdmin Integration
-- [ ] Configure ActiveAdmin initializer
-- [ ] Create admin user model/authentication
-- [ ] Register resources (User, Book, Borrowing)
-- [ ] Customize dashboards and filters
-
-### Borrowing Lifecycle (AASM gem)
-- [ ] Configure AASM state machine in Borrowing model
-- [ ] Define states: requested → borrowed → returned → overdue
-- [ ] Add transition validations and callbacks
-- [ ] Update controller actions to use state transitions
-- [ ] Add RSpec specs for state machine behavior
+### Audit Logging (audited gem) ✅
+- [x] Install and configure Audited gem
+- [x] Enable auditing on User, Book, and Borrowing models
+- [x] Add specs for audit trail
+- [x] Maintain version history for all changes
+- [x] ✅ All tests passing → 202 examples, 0 failures
 
 ### API Documentation (rswag gem)
 - [ ] Configure Rswag initializer
@@ -223,17 +211,24 @@ Each step is self-contained and test-driven: implement → test → refactor →
 - [ ] Add `/api-docs` endpoint
 - [ ] Document all request/response schemas
 
-### Audit Logging (audited gem)
-- [ ] Configure Audited gem
-- [ ] Enable auditing on User, Book, Borrowing models
-- [ ] Create audit log viewer (via ActiveAdmin or custom endpoint)
-- [ ] Add specs for audit trail
-- [ ] Document audit log access for administrators
+### Borrowing Lifecycle (AASM gem)
+- [ ] Configure AASM state machine in Borrowing model
+- [ ] Define states: requested → borrowed → returned → overdue
+- [ ] Add transition validations and callbacks
+- [ ] Update controller actions to use state transitions
+- [ ] Add RSpec specs for state machine behavior
+
+## Step 9 - Desirable Features
+
+### Super Admin Dashboard (like ActiveAdmin)
+- [ ] Create super admin user model/authentication.
+- [ ] Allow CRUD on every model.
+- [ ] Allow pagination, sorting and filtering on every model.
+- [ ] Allow CSV exportations.
+- [ ] Allow audit trail history.
 
 ### Additional Ideas
 - [ ] Rate limiting (rack-attack)
-- [ ] Background jobs (Sidekiq) for notifications
-- [ ] Email notifications for overdue books
-- [ ] Search optimization (Elasticsearch/pg_search)
-- [ ] GraphQL API layer
+- [ ] Background jobs (Sidekiq) for notifications like emails notifications for overdue borrowings.
+- [ ] Search optimization (Elasticsearch/pg_search).
 - [ ] Webhooks for external integrations

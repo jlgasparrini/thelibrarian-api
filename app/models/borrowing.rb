@@ -2,6 +2,9 @@ class Borrowing < ApplicationRecord
   # Soft delete
   acts_as_paranoid
 
+  # Audit logging
+  audited associated_with: :user
+
   belongs_to :user
   belongs_to :book, counter_cache: true
 
