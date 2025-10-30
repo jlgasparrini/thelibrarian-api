@@ -80,4 +80,5 @@ end
 
 group :test do
   gem "database_cleaner-active_record", "~> 2.2"
+  gem "simplecov", "~> 0.22", require: false
 end

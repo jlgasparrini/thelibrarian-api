@@ -185,9 +185,7 @@ Each step is self-contained and test-driven: implement → test → refactor →
 
 ## 🧱 Step 8 — Enhancements
 
-**Goal:** Add advanced, production-grade features (gems installed but not yet configured).
-
-**Note:** These features are planned but not yet implemented. The gems are already in the Gemfile for future development.
+**Goal:** Add advanced, production-grade features.
 
 ### Soft Delete (paranoia gem) ✅
 - [x] Add `deleted_at` to Book, Borrowing, and User models
@@ -212,7 +210,15 @@ Each step is self-contained and test-driven: implement → test → refactor →
 - [x] Generate Swagger documentation and mount UI at `/api-docs` endpoint
 - [x] ✅ All tests passing → 219 examples, 0 failures
 
-## Step 9 - Technical Debt (or desired features) 
+### Code Coverage (simplecov gem)
+- [x] Install and configure SimpleCov gem
+- [x] Add specs for all models, controllers, and services
+- [x] Generate code coverage report and mount UI at `/coverage` endpoint
+- [x] ✅ All tests passing → 219 examples, 0 failures
+
+---
+
+## Technical Debt (or desired features) 
 
 ### Borrowing Lifecycle (AASM gem)
 - [ ] Configure AASM state machine in Borrowing model
