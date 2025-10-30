@@ -212,6 +212,8 @@ Each step is self-contained and test-driven: implement → test → refactor →
 - [x] Generate Swagger documentation and mount UI at `/api-docs` endpoint
 - [x] ✅ All tests passing → 219 examples, 0 failures
 
+## Step 9 - Technical Debt (or desired features) 
+
 ### Borrowing Lifecycle (AASM gem)
 - [ ] Configure AASM state machine in Borrowing model
 - [ ] Define states: requested → borrowed → returned → overdue
@@ -219,17 +221,15 @@ Each step is self-contained and test-driven: implement → test → refactor →
 - [ ] Update controller actions to use state transitions
 - [ ] Add RSpec specs for state machine behavior
 
-## Step 9 - Desirable Features
+### Support multiple book instances (multiple copies of the same book)
+- [ ] Add BookCopy model and connect it to Book and Borrowing models.
+- [ ] Update Borrowing and Book references to use BookCopy model.
+- [ ] Update specs to handle BookCopy instance.
 
-### Super Admin Dashboard (like ActiveAdmin)
-- [ ] Create super admin user model/authentication.
-- [ ] Allow CRUD on every model.
-- [ ] Allow pagination, sorting and filtering on every model.
-- [ ] Allow CSV exportations.
-- [ ] Allow audit trail history.
-
-### Additional Ideas
+## Additional Ideas
+- [ ] Super Admin Dashboard (like ActiveAdmin).
 - [ ] Rate limiting (rack-attack)
 - [ ] Background jobs (Sidekiq) for notifications like emails notifications for overdue borrowings.
 - [ ] Search optimization (Elasticsearch/pg_search).
-- [ ] Webhooks for external integrations
+- [ ] Webhooks for external integrations.
+- [ ] Tickets (for support).
