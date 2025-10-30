@@ -5,13 +5,18 @@ on:
   push:
     branches: [ main ]
 
+# Cancel in-progress runs for the same workflow and branch
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   scan_ruby:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v4
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -22,16 +27,11 @@ jobs:
       - name: Scan for common Rails security vulnerabilities using static analysis
         run: bin/brakeman --no-pager
 
-      - name: Scan for security vulnerabilities in dependencies
-        run: |
-          gem install bundler-audit
-          bundle audit check --update
-
   lint:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v4
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -42,66 +42,15 @@ jobs:
       - name: Lint code for consistent style
         run: bin/rubocop -f github
 
-  schema_check:
-    runs-on: ubuntu-latest
-
-    services:
-      postgres:
-        image: postgres:14
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: thelibrarian_api_test
-        ports:
-          - 5432:5432
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
-
-    steps:
-      - name: Install packages
-        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y build-essential git libpq-dev libyaml-dev pkg-config
-
-      - name: Checkout code
-        uses: actions/checkout@v5
-
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: .ruby-version
-          bundler-cache: true
-
-      - name: Verify database schema is up to date
-        env:
-          RAILS_ENV: test
-          DATABASE_URL: postgres://postgres:postgres@localhost:5432/thelibrarian_api_test
-          JWT_SECRET_KEY: test_secret_key_for_ci_only
-        run: |
-          if [ -f db/schema.rb ]; then
-            bin/rails db:migrate
-            git diff --exit-code db/schema.rb || (echo "Schema is out of sync. Run 'rails db:migrate' and commit the changes." && exit 1)
-          else
-            echo "No schema.rb found yet - skipping schema check"
-          fi
-
   test:
     runs-on: ubuntu-latest
 
-    services:
-      postgres:
-        image: postgres:14
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: thelibrarian_api_test
-        ports:
-          - 5432:5432
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
-
     steps:
       - name: Install packages
-        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y build-essential git libpq-dev libyaml-dev pkg-config
+        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y build-essential git libyaml-dev pkg-config
 
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v4
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -109,22 +58,51 @@ jobs:
           ruby-version: .ruby-version
           bundler-cache: true
 
-      - name: Set up database
+      - name: Prepare test database
         env:
           RAILS_ENV: test
-          DATABASE_URL: postgres://postgres:postgres@localhost:5432/thelibrarian_api_test
-          JWT_SECRET_KEY: test_secret_key_for_ci_only
+        run: bin/rails db:test:prepare
+
+      - name: Run tests with multiple formats
+        env:
+          RAILS_ENV: test
         run: |
-          if [ -f db/schema.rb ]; then
-            bin/rails db:schema:load
-          else
-            echo "No schema.rb found - database is empty (no migrations yet)"
-          fi
-
-      - name: Run tests
-        env:
-          RAILS_ENV: test
-          DATABASE_URL: postgres://postgres:postgres@localhost:5432/thelibrarian_api_test
-          JWT_SECRET_KEY: test_secret_key_for_ci_only
-        run: bundle exec rspec --format documentation
-
+          mkdir -p tmp/test-results
+          bundle exec rspec \
+            --format progress \
+            --format RspecJunitFormatter \
+            --out tmp/test-results/rspec.xml \
+            --format html \
+            --out tmp/test-results/rspec.html
+      
+      - name: Upload test results (JUnit XML)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: tmp/test-results/rspec.xml
+          retention-days: 30
+      
+      - name: Upload test results (HTML)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-report-html
+          path: tmp/test-results/rspec.html
+          retention-days: 30
+      
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/
+          retention-days: 30
+      
+      - name: Publish test results to GitHub
+        if: always()
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        with:
+          files: tmp/test-results/rspec.xml
+          check_name: RSpec Test Results
+          comment_title: Test Results

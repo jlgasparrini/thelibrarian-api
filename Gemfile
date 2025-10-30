@@ -80,4 +80,6 @@ end
 group :test do
   gem "database_cleaner-active_record", "~> 2.2"
   gem "simplecov", "~> 0.22", require: false
+  gem "rspec_junit_formatter", "~> 0.6"
+  gem "rspec-html-matchers", "~> 0.10"
 end
