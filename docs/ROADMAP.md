@@ -183,24 +183,42 @@ Each step is self-contained and test-driven: implement → test → refactor →
 
 ---
 
-## 🧱 Step 8 — Future Enhancements (Optional)
+## 🧱 Step 8 — Enhancements
 
-**Goal:** Add advanced, production-grade features (gems installed but not yet configured).
+**Goal:** Add advanced, production-grade features.
 
-**Note:** These features are planned but not yet implemented. The gems are already in the Gemfile for future development.
+### Soft Delete (paranoia gem) ✅
+- [x] Add `deleted_at` to Book, Borrowing, and User models
+- [x] Configure `acts_as_paranoid` in all models
+- [x] Soft delete works automatically with destroy actions
+- [x] Add specs for soft delete behavior
+- [x] Add custom error message for deleted accounts
+- [x] ✅ All tests passing → 179 examples, 0 failures
 
-### Soft Delete (paranoia gem)
-- [ ] Add `deleted_at` to Book, Borrowing, and optionally User models
-- [ ] Configure `acts_as_paranoid` in models
-- [ ] Update destroy actions to perform logical deletes
-- [ ] Add specs for soft delete behavior
+### Audit Logging (audited gem) ✅
+- [x] Install and configure Audited gem
+- [x] Enable auditing on User, Book, and Borrowing models
+- [x] Add specs for audit trail
+- [x] Maintain version history for all changes
+- [x] ✅ All tests passing → 202 examples, 0 failures
 
-### ActiveAdmin Integration
-- [ ] Configure ActiveAdmin initializer
-- [ ] Create admin user model/authentication
-- [ ] Register resources (User, Book, Borrowing)
-- [ ] Restrict access to librarian role
-- [ ] Customize dashboards and filters
+### API Documentation (rswag gem) ✅
+- [x] Install and configure Rswag gem
+- [x] Create swagger_helper with API metadata
+- [x] Add integration specs for Books and Auth endpoints
+- [x] Define schemas for User, Book, Borrowing, and Error responses
+- [x] Generate Swagger documentation and mount UI at `/api-docs` endpoint
+- [x] ✅ All tests passing → 219 examples, 0 failures
+
+### Code Coverage (simplecov gem)
+- [x] Install and configure SimpleCov gem
+- [x] Add specs for all models, controllers, and services
+- [x] Generate code coverage report and mount UI at `/coverage` endpoint
+- [x] ✅ All tests passing → 219 examples, 0 failures
+
+---
+
+## Technical Debt (or desired features) 
 
 ### Borrowing Lifecycle (AASM gem)
 - [ ] Configure AASM state machine in Borrowing model
@@ -209,24 +227,15 @@ Each step is self-contained and test-driven: implement → test → refactor →
 - [ ] Update controller actions to use state transitions
 - [ ] Add RSpec specs for state machine behavior
 
-### API Documentation (rswag gem)
-- [ ] Configure Rswag initializer
-- [ ] Add Swagger annotations to controllers
-- [ ] Generate API documentation
-- [ ] Add `/api-docs` endpoint
-- [ ] Document all request/response schemas
+### Support multiple book instances (multiple copies of the same book)
+- [ ] Add BookCopy model and connect it to Book and Borrowing models.
+- [ ] Update Borrowing and Book references to use BookCopy model.
+- [ ] Update specs to handle BookCopy instance.
 
-### Audit Logging (audited gem)
-- [ ] Configure Audited gem
-- [ ] Enable auditing on User, Book, Borrowing models
-- [ ] Create audit log viewer (via ActiveAdmin or custom endpoint)
-- [ ] Add specs for audit trail
-- [ ] Document audit log access for administrators
-
-### Additional Ideas
+## Additional Ideas
+- [ ] Super Admin Dashboard (like ActiveAdmin).
 - [ ] Rate limiting (rack-attack)
-- [ ] Background jobs (Sidekiq) for notifications
-- [ ] Email notifications for overdue books
-- [ ] Search optimization (Elasticsearch/pg_search)
-- [ ] GraphQL API layer
-- [ ] Webhooks for external integrations
+- [ ] Background jobs (Sidekiq) for notifications like emails notifications for overdue borrowings.
+- [ ] Search optimization (Elasticsearch/pg_search).
+- [ ] Webhooks for external integrations.
+- [ ] Tickets (for support).

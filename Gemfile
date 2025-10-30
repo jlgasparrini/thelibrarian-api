@@ -25,11 +25,12 @@ gem "pagy", "~> 9.0"
 # Soft delete
 gem "paranoia", "~> 3.0"
 
+# Audit logging
+gem "audited", "~> 5.4"
+
+# Future enhancements (not yet configured - see ROADMAP.md Step 8)
 # State machine for borrowings
 gem "aasm", "~> 5.5"
-
-# Admin panel
-gem "activeadmin", "~> 3.2"
 
 # API documentation
 gem "rswag", "~> 2.15"
@@ -79,4 +80,5 @@ end
 
 group :test do
   gem "database_cleaner-active_record", "~> 2.2"
+  gem "simplecov", "~> 0.22", require: false
 end

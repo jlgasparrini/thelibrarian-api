@@ -2,8 +2,8 @@
 
 A **production-ready Ruby on Rails RESTful API** for library management, featuring JWT authentication, role-based authorization, book management, borrowing workflows, and analytics dashboards — all built following **test-driven development (TDD)** principles.
 
-[![Tests](https://img.shields.io/badge/tests-137%20passing-success)]()
-[![Coverage](https://img.shields.io/badge/coverage-100%25-success)]()
+[![Tests](https://img.shields.io/badge/tests-219%20passing-success)]()
+[![Coverage](https://img.shields.io/badge/coverage-93.6%25-success)]()
 [![Ruby](https://img.shields.io/badge/ruby-3.4.7-red)]()
 [![Rails](https://img.shields.io/badge/rails-8.0-red)]()
 
@@ -39,8 +39,11 @@ Built with clean architecture, comprehensive test coverage, and production-ready
 | **Database** | PostgreSQL 14+ |
 | **Authentication** | Devise + Devise-JWT |
 | **Authorization** | Pundit |
-| **Testing** | RSpec + FactoryBot + Faker |
+| **Testing** | RSpec + FactoryBot + Faker + SimpleCov |
 | **Pagination** | Pagy |
+| **Soft Delete** | Paranoia |
+| **Audit Logging** | Audited |
+| **API Docs** | Rswag (Swagger/OpenAPI) |
 | **CI/CD** | GitHub Actions |
 | **Deployment** | Docker + Render.com |
 | **Code Quality** | RuboCop + Brakeman |
@@ -123,20 +126,21 @@ curl http://localhost:3000/api/v1/health
 | 📖 **Borrowing System** | Borrow/return books with automatic due dates (14 days) |
 | 📊 **Dashboards** | Role-specific analytics and borrowing insights |
 | 📄 **Pagination** | Pagy-powered pagination on all list endpoints |
-| 🧪 **Test Coverage** | 137 RSpec examples, 100% passing |
+| 🗑️ **Soft Delete** | Paranoia gem for logical deletion with restore capability |
+| 📝 **Audit Logging** | Complete audit trail of all changes with Audited gem |
+| 📚 **API Documentation** | Interactive Swagger/OpenAPI docs at `/api-docs` |
 | 🐳 **Docker Support** | Full Docker Compose setup for local development |
 | 🚀 **CI/CD** | GitHub Actions for automated testing |
-| 📖 **API Docs** | Comprehensive markdown documentation |
 
-### 🔮 Planned (Gems Installed)
+### 🔮 Planned Features
 
-- **Soft Delete** (paranoia) - Logical deletion of records
-- **Admin Panel** (activeadmin) - Web interface for management
-- **State Machine** (aasm) - Borrowing lifecycle management
-- **Swagger Docs** (rswag) - Interactive API documentation
-- **Audit Logging** (audited) - Activity tracking
+- **State Machine** (aasm) - Borrowing lifecycle management (requested → borrowed → returned → overdue)
+- **Book Instances** - Track individual physical copies with barcodes and conditions
+- **Rate Limiting** - API throttling with rack-attack
+- **Background Jobs** - Email notifications for overdue books with Sidekiq
+- **Search Optimization** - Full-text search with Elasticsearch or pg_search
 
-See [ROADMAP.md](./docs/ROADMAP.md) Step 8 for implementation details.
+See [ROADMAP.md](./docs/ROADMAP.md) for implementation details.
 
 ---
 
@@ -186,15 +190,16 @@ spec/
 ## 🧪 Testing
 
 ### Test Coverage
-- **137 examples, 0 failures**
-- **100% passing rate**
-- Model specs (validations, associations, scopes)
+- **219 examples, 0 failures**
+- **93.6% code coverage**
+- Model specs (validations, associations, scopes, audit logging)
 - Request specs (endpoints, authentication, authorization)
 - Policy specs (role-based access control)
+- Integration specs (API documentation with Rswag)
 
 ### Run Tests
 ```bash
-# All tests
+# All tests (with coverage report)
 bundle exec rspec
 
 # Specific file
@@ -203,9 +208,15 @@ bundle exec rspec spec/models/book_spec.rb
 # With documentation format
 bundle exec rspec --format documentation
 
-# With coverage report
-COVERAGE=true bundle exec rspec
+# View coverage report
+open coverage/index.html
 ```
+
+**Coverage Report:**
+- Automatically generated after running tests
+- Located at `coverage/index.html`
+- Current coverage: **93.6%** (380/406 lines)
+- Grouped by: Models, Controllers, Policies, Serializers
 
 ## 🏗️ Architecture & Design Patterns
 
