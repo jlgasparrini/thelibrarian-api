@@ -2,6 +2,9 @@ class Book < ApplicationRecord
   # Soft delete
   acts_as_paranoid
 
+  # Audit logging
+  audited
+
   # Associations
   has_many :borrowings, dependent: :destroy
 

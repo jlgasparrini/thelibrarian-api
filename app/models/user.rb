@@ -2,6 +2,9 @@ class User < ApplicationRecord
   # Soft delete
   acts_as_paranoid
 
+  # Audit logging
+  audited except: [ :encrypted_password, :reset_password_token ]
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
