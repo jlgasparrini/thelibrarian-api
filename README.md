@@ -3,7 +3,7 @@
 A **production-ready Ruby on Rails RESTful API** for library management, featuring JWT authentication, role-based authorization, book management, borrowing workflows, and analytics dashboards — all built following **test-driven development (TDD)** principles.
 
 [![Tests](https://img.shields.io/badge/tests-220%20passing-success)]()
-[![Coverage](https://img.shields.io/badge/coverage-93.6%25-success)]()
+[![Coverage](https://img.shields.io/badge/coverage-98.19%25-success)]()
 [![Ruby](https://img.shields.io/badge/ruby-3.4.7-red)]()
 [![Rails](https://img.shields.io/badge/rails-8.0.4-red)]()
 [![Deployment](https://img.shields.io/badge/deployment-live-brightgreen)](https://thelibrarian-api.onrender.com)
@@ -25,7 +25,6 @@ Built with clean architecture, comprehensive test coverage, and production-ready
 - 📘 [User Stories](./docs/USER_STORIES.md) - Functional requirements and API endpoints
 - 📖 [API Documentation](./docs/API_DOCUMENTATION.md) - Complete endpoint reference with examples
 - 🧱 [Development Roadmap](./docs/ROADMAP.md) - TDD development guide and implementation steps
-- ✅ [Production Checklist](./docs/PRODUCTION_CHECKLIST.md) - Pre-deployment verification
 
 ---
 
@@ -66,9 +65,6 @@ Built with clean architecture, comprehensive test coverage, and production-ready
 | 🐳 **Docker Support** | Full Docker Compose setup for local development |
 | 🚀 **CI/CD** | GitHub Actions with automated testing and deployment |
 | 🌐 **Production Deployment** | Live on Render.com with PostgreSQL database |
-
-
-See [ROADMAP.md](./docs/ROADMAP.md) for implementation details.
 
 ---
 
