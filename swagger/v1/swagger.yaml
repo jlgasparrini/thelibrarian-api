@@ -341,14 +341,330 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Error"
+  "/api/v1/borrowings":
+    get:
+      summary: List all borrowings
+      tags:
+      - Borrowings
+      security:
+      - Bearer: []
+      parameters:
+      - name: page
+        in: query
+        required: false
+        description: Page number
+        schema:
+          type: integer
+      - name: items
+        in: query
+        required: false
+        description: Items per page
+        schema:
+          type: integer
+      - name: status
+        in: query
+        required: false
+        description: Filter by status (borrowed, returned)
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  borrowings:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/Borrowing"
+                  pagination:
+                    type: object
+                    properties:
+                      current_page:
+                        type: integer
+                      per_page:
+                        type: integer
+                      total_count:
+                        type: integer
+                      total_pages:
+                        type: integer
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+    post:
+      summary: Borrow a book
+      tags:
+      - Borrowings
+      security:
+      - Bearer: []
+      parameters: []
+      responses:
+        '201':
+          description: created
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Borrowing"
+        '422':
+          description: book not available
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                borrowing:
+                  type: object
+                  properties:
+                    book_id:
+                      type: integer
+                  required:
+                  - book_id
+  "/api/v1/borrowings/overdue":
+    get:
+      summary: List overdue borrowings
+      tags:
+      - Borrowings
+      security:
+      - Bearer: []
+      parameters:
+      - name: page
+        in: query
+        required: false
+        description: Page number
+        schema:
+          type: integer
+      - name: items
+        in: query
+        required: false
+        description: Items per page
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  borrowings:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/Borrowing"
+                  pagination:
+                    type: object
+                    properties:
+                      current_page:
+                        type: integer
+                      per_page:
+                        type: integer
+                      total_count:
+                        type: integer
+                      total_pages:
+                        type: integer
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+  "/api/v1/borrowings/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: Borrowing ID
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: Show a borrowing
+      tags:
+      - Borrowings
+      security:
+      - Bearer: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Borrowing"
+        '404':
+          description: borrowing not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+    patch:
+      summary: Return a book
+      tags:
+      - Borrowings
+      security:
+      - Bearer: []
+      parameters:
+      - name: action_type
+        in: query
+        required: true
+        description: Action to perform (return)
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Borrowing"
+        '403':
+          description: forbidden - only librarians can update borrowings
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+  "/api/v1/dashboard":
+    get:
+      summary: Get dashboard statistics
+      tags:
+      - Dashboard
+      security:
+      - Bearer: []
+      description: Returns role-specific dashboard statistics. Librarians see library-wide
+        stats, members see their personal stats.
+      responses:
+        '200':
+          description: successful - member dashboard
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  dashboard:
+                    type: object
+                    properties:
+                      total_books:
+                        type: integer
+                      total_available_books:
+                        type: integer
+                      total_borrowed_books:
+                        type: integer
+                      total_members:
+                        type: integer
+                      overdue_books:
+                        type: integer
+                      books_due_today:
+                        type: integer
+                      members_with_overdue_books:
+                        type: integer
+                      recent_borrowings:
+                        type: array
+                      popular_books:
+                        type: array
+                      overdue_borrowings:
+                        type: array
+                      active_borrowings_count:
+                        type: integer
+                      overdue_borrowings_count:
+                        type: integer
+                      books_due_soon:
+                        type: integer
+                      borrowed_books:
+                        type: array
+                      borrowing_history:
+                        type: array
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+  "/api/v1/health":
+    get:
+      summary: Health check
+      tags:
+      - Health
+      description: Returns the health status of the API. No authentication required.
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum:
+                    - ok
+                  timestamp:
+                    type: string
+                    format: datetime
+                  version:
+                    type: string
+                required:
+                - status
+  "/api/v1/users/me":
+    get:
+      summary: Get current user profile
+      tags:
+      - Users
+      security:
+      - Bearer: []
+      description: Returns the profile information of the currently authenticated
+        user
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      email:
+                        type: string
+                        format: email
+                      role:
+                        type: string
+                        enum:
+                        - librarian
+                        - member
+                      created_at:
+                        type: string
+                        format: datetime
+                    required:
+                    - id
+                    - email
+                    - role
+                required:
+                - user
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
 servers:
+- url: https://thelibrarian-api.onrender.com
+  description: Production server
 - url: http://localhost:3000
   description: Development server
-- url: https://{defaultHost}
-  description: Production server
-  variables:
-    defaultHost:
-      default: api.library.com
 components:
   securitySchemes:
     Bearer:

@@ -40,6 +40,9 @@ Rails.application.routes.draw do
     registrations: "api/v1/auth/registrations"
   }
 
-  # Defines the root path route ("/")
-  # root "posts#index"
+  # Redirect root to API documentation
+  root to: redirect("/api-docs")
+
+  # Catch-all route for 404s - redirect to API documentation
+  match "*path", to: redirect("/api-docs"), via: :all
 end
