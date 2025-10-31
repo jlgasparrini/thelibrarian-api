@@ -9,7 +9,11 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
     # Use environment variable for production, allow localhost for development
     origins_list = if Rails.env.production?
-      ENV.fetch("CORS_ORIGINS", "").split(",").map(&:strip)
+      # Allow both production origins and localhost for testing
+      production_origins = ENV.fetch("CORS_ORIGINS", "").split(",").map(&:strip)
+      localhost_origins = [ "http://localhost:3001", "http://localhost:5173", "http://localhost:3000" ]
+      vercel_frontend = [ "https://thelibrarian-client.vercel.app" ]
+      production_origins + localhost_origins + vercel_frontend
     else
       [ "http://localhost:3001", "http://localhost:5173", "http://localhost:3000" ]
     end
