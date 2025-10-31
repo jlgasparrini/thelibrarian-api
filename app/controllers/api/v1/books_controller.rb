@@ -41,7 +41,12 @@ module Api
       def update
         authorize @book
 
-        if @book.update(book_params)
+        updated = nil
+        @book.with_lock do
+          updated = @book.update(book_params)
+        end
+
+        if updated
           render json: { book: @book, message: "Book updated successfully" }, status: :ok
         else
           render json: { errors: @book.errors.full_messages }, status: :unprocessable_content
@@ -62,7 +67,7 @@ module Api
       end
 
       def book_params
-        params.require(:book).permit(:title, :author, :genre, :isbn, :total_copies, :available_copies)
+        params.require(:book).permit(:title, :author, :genre, :isbn, :total_copies)
       end
     end
   end

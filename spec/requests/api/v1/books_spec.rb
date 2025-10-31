@@ -156,6 +156,82 @@ RSpec.describe 'Api::V1::Books', type: :request do
         expect(json_response['book']['title']).to eq('Updated Title')
         expect(json_response['message']).to eq('Book updated successfully')
       end
+
+      it 'allows lowering total_copies when there are still available copies and keeps consistency with active borrowings' do
+        # Setup: total_copies = 6, available_copies = 6
+        book = create(:book, total_copies: 6, available_copies: 6)
+        # One active borrowing reduces available_copies to 5
+        create(:borrowing, book: book, user: member)
+        book.reload
+        expect(book.available_copies).to eq(5)
+
+        # Lower total_copies to 4 (since only 1 is borrowed, this should be allowed)
+        put "/api/v1/books/#{book.id}",
+            params: { book: { total_copies: 4 } },
+            headers: auth_headers(librarian)
+
+        expect(response).to have_http_status(:ok)
+        book.reload
+        expect(book.total_copies).to eq(4)
+        # available_copies should equal new total minus active borrowings (4 - 1 = 3)
+        expect(book.available_copies).to eq(3)
+      end
+
+      it 'rejects lowering total_copies below active borrowings' do
+        # Setup: total_copies = 2, available_copies = 2
+        book = create(:book, total_copies: 2, available_copies: 2)
+        # Two active borrowings make available_copies = 0
+        create(:borrowing, book: book, user: member)
+        create(:borrowing, book: book, user: create(:user, :member))
+        book.reload
+        expect(book.available_copies).to eq(0)
+
+        # Attempt to lower total_copies to 1 (less than active borrowings 2) should fail
+        put "/api/v1/books/#{book.id}",
+            params: { book: { total_copies: 1 } },
+            headers: auth_headers(librarian)
+
+        expect(response).to have_http_status(:unprocessable_content)
+        expect(json_response['errors'].join).to match(/cannot be less than active borrowings/)
+      end
+
+      it 'recomputes available_copies when increasing total_copies (total - active borrowings)' do
+        # Setup: total_copies = 3, available_copies = 3
+        book = create(:book, total_copies: 3, available_copies: 3)
+        # One active borrowing -> available becomes 2
+        create(:borrowing, book: book, user: member)
+        book.reload
+        expect(book.available_copies).to eq(2)
+
+        # Increase total to 5 => available should become 5 - 1 = 4
+        put "/api/v1/books/#{book.id}",
+            params: { book: { total_copies: 5 } },
+            headers: auth_headers(librarian)
+
+        expect(response).to have_http_status(:ok)
+        book.reload
+        expect(book.total_copies).to eq(5)
+        expect(book.available_copies).to eq(4)
+      end
+
+      it 'rejects lowering total_copies when all copies are borrowed' do
+        # Setup: total_copies = 6, available_copies = 6
+        book = create(:book, total_copies: 6, available_copies: 6)
+        # Borrow all copies by different members -> available becomes 0
+        6.times do
+          create(:borrowing, book: book, user: create(:user, :member))
+        end
+        book.reload
+        expect(book.available_copies).to eq(0)
+
+        # Attempt to lower total_copies to 5 (less than active borrowings 6) should fail
+        put "/api/v1/books/#{book.id}",
+            params: { book: { total_copies: 5 } },
+            headers: auth_headers(librarian)
+
+        expect(response).to have_http_status(:unprocessable_content)
+        expect(json_response['errors'].join).to match(/cannot be less than active borrowings/)
+      end
     end
 
     context 'when user is a member' do
