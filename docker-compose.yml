@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   db:
@@ -18,8 +18,11 @@ services:
       retries: 5
 
   web:
-    build: .
-    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails db:prepare && bundle exec rails server -b 0.0.0.0"
+    build:
+      context: .
+      args:
+        BUNDLE_WITHOUT: ""
+    command: bash -c "rm -f tmp/pids/server.pid && bundle install && bundle exec rails db:prepare && bundle exec rails server -b 0.0.0.0"
     volumes:
       - .:/rails
       - bundle_cache:/usr/local/bundle
@@ -32,6 +35,7 @@ services:
       DATABASE_URL: postgres://postgres:postgres@db:5432/thelibrarian_api_development
       RAILS_ENV: development
       RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
+      BUNDLE_WITHOUT: ""
     stdin_open: true
     tty: true
 
