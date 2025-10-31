@@ -152,31 +152,31 @@ Each step is self-contained and test-driven: implement → test → refactor →
   - Created `BorrowingSerializer` with context-specific methods (with_relations, detailed, dashboard, history)
   - Updated `UserSerializer` with minimal method for nested responses
   - Eliminated ~60 lines of repeated `.as_json()` calls
-  
+
 - [x] **Service Objects** - Extract complex business logic
   - Created `DashboardService` for dashboard data aggregation
   - Reduced `DashboardsController` from 111 lines to 15 lines (86% reduction)
   - Improved testability and separation of concerns
-  
+
 - [x] **Concerns** - Reusable controller modules
   - Created `JsonResponse` concern for consistent API responses
   - Created `JwtAuthentication` concern for JWT token handling
   - DRY principle applied across controllers
-  
+
 - [x] **Constants** - Centralized configuration
   - Created `AppConstants` initializer
   - Extracted magic numbers (pagination, borrowing period, dashboard limits)
   - Single source of truth for configuration values
-  
+
 - [x] **Scopes** - Reusable query logic
   - Added `sorted_by` scope to Book model
   - Added `due_today` and `due_soon` scopes to Borrowing model
   - Cleaner controller code with chainable queries
-  
+
 - [x] **CI/CD Improvements**
   - Fixed JWT_SECRET_KEY configuration for test environment
   - All 137 tests passing in CI
-  
+
 - [x] ✅ All refactoring complete and code quality improved → 137 examples, 0 failures.
 - [x] ✅ Ready for production deployment and frontend integration.
 
@@ -218,7 +218,7 @@ Each step is self-contained and test-driven: implement → test → refactor →
 
 ---
 
-## Technical Debt (or desired features) 
+## Technical Debt (or desired features)
 
 ### Borrowing Lifecycle (AASM gem)
 - [ ] Configure AASM state machine in Borrowing model
@@ -233,6 +233,7 @@ Each step is self-contained and test-driven: implement → test → refactor →
 - [ ] Update specs to handle BookCopy instance.
 
 ## Additional Ideas
+- [ ] Setup CI with github comments
 - [ ] Super Admin Dashboard (like ActiveAdmin).
 - [ ] Rate limiting (rack-attack)
 - [ ] Background jobs (Sidekiq) for notifications like emails notifications for overdue borrowings.
