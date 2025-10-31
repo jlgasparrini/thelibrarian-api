@@ -5,9 +5,21 @@ Rswag::Api.configure do |c|
   # that it's configured to generate files in the same folder
   c.openapi_root = Rails.root.to_s + "/swagger"
 
-  # Inject a lambda function to alter the returned Swagger prior to serialization
-  # The function will have access to the rack env for the current request
-  # For example, you could leverage this to dynamically assign the "host" property
-  #
-  # c.swagger_filter = lambda { |swagger, env| swagger['host'] = env['HTTP_HOST'] }
+  # Make Swagger servers dynamic so localhost appears while running locally
+  c.swagger_filter = lambda { |swagger, env|
+    scheme = env["rack.url_scheme"] || "http"
+    host = env["HTTP_HOST"] || "localhost:3000"
+    current = {
+      "url" => "#{scheme}://#{host}",
+      "description" => (Rails.env.production? ? "Production server" : "Development server")
+    }
+
+    # Keep production as a secondary option for convenience
+    production = {
+      "url" => "https://thelibrarian-api.onrender.com",
+      "description" => "Production server"
+    }
+
+    swagger["servers"] = [ current, production ]
+  }
 end

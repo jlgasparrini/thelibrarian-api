@@ -9,15 +9,7 @@ RSpec.describe Book, type: :model do
     it { should validate_presence_of(:isbn) }
     it { should validate_uniqueness_of(:isbn).case_insensitive }
     it { should validate_presence_of(:total_copies) }
-    it { should validate_presence_of(:available_copies) }
     it { should validate_numericality_of(:total_copies).only_integer.is_greater_than_or_equal_to(0) }
-    it { should validate_numericality_of(:available_copies).only_integer.is_greater_than_or_equal_to(0) }
-
-    it 'validates available_copies cannot exceed total_copies' do
-      book = build(:book, total_copies: 5, available_copies: 10)
-      expect(book).not_to be_valid
-      expect(book.errors[:available_copies]).to include("cannot exceed total copies")
-    end
 
     it 'allows available_copies equal to total_copies' do
       book = build(:book, total_copies: 5, available_copies: 5)

@@ -242,15 +242,12 @@ paths:
                       type: string
                     total_copies:
                       type: integer
-                    available_copies:
-                      type: integer
                   required:
                   - title
                   - author
                   - genre
                   - isbn
                   - total_copies
-                  - available_copies
   "/api/v1/books/{id}":
     parameters:
     - name: id

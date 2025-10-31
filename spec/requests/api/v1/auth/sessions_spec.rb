@@ -45,6 +45,41 @@ RSpec.describe 'Api::V1::Auth::Sessions', type: :request do
 
         expect(response).to have_http_status(:unauthorized)
       end
+
+      it 'does not include an Authorization header' do
+        post '/api/v1/auth/sign_in', params: invalid_params
+
+        expect(response.headers['Authorization']).to be_nil
+      end
+    end
+
+    context 'with non-existent user' do
+      let(:nonexistent_params) do
+        {
+          user: {
+            email: 'does-not-exist@example.com',
+            password: 'irrelevant'
+          }
+        }
+      end
+
+      it 'returns 401 and no Authorization header' do
+        post '/api/v1/auth/sign_in', params: nonexistent_params
+
+        expect(response).to have_http_status(:unauthorized)
+        expect(response.headers['Authorization']).to be_nil
+        expect(json_response['error']).to eq('Invalid email or password')
+      end
+    end
+
+    context 'with invalid credentials but an Authorization header present' do
+      it 'still returns 401 and ignores the provided token' do
+        existing_token_headers = auth_headers(user)
+        post '/api/v1/auth/sign_in', params: { user: { email: 'test@example.com', password: 'wrongpassword' } }, headers: existing_token_headers
+
+        expect(response).to have_http_status(:unauthorized)
+        expect(response.headers['Authorization']).to be_nil
+      end
     end
   end
 
