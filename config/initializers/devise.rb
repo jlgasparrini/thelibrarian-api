@@ -263,7 +263,8 @@ Devise.setup do |config|
   # should add them to the navigational formats lists.
   #
   # The "*/*" below is required to match Internet Explorer requests.
-  # config.navigational_formats = ['*/*', :html, :turbo_stream]
+  # For API-only mode, set to empty array to disable navigational formats
+  config.navigational_formats = []
 
   # The default HTTP method used to sign out a resource. Default is :delete.
   config.sign_out_via = :delete
@@ -321,5 +322,11 @@ Devise.setup do |config|
       [ "DELETE", %r{^/api/v1/auth/sign_out$} ]
     ]
     jwt.expiration_time = 1.day.to_i
+
+    # Disable session storage for API (use only JWT)
+    jwt.aud_header = "JWT_AUD"
   end
+
+  # Skip session storage for API requests (JWT only)
+  config.skip_session_storage = [ :http_auth, :token_auth ]
 end

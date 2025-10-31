@@ -5,6 +5,9 @@ class ApplicationController < ActionController::API
   include Pundit::Authorization
   include Pagy::Backend
 
+  # Disable session and cookie authentication for API
+  before_action :configure_devise_for_api
+
   # Handle unauthorized access
   before_action :configure_permitted_parameters, if: :devise_controller?
 
@@ -12,6 +15,11 @@ class ApplicationController < ActionController::API
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   private
+
+  def configure_devise_for_api
+    # Force Devise to use only JWT authentication (no sessions/cookies)
+    request.env["devise.skip_storage"] = true
+  end
 
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up, keys: [ :role ])
