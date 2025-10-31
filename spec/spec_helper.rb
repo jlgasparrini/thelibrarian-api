@@ -20,6 +20,8 @@ SimpleCov.start "rails" do
   add_filter "/spec/"
   add_filter "/config/"
   add_filter "/vendor/"
+  add_filter "app/jobs/application_job.rb"
+  add_filter "app/mailers/application_mailer.rb"
 
   add_group "Models", "app/models"
   add_group "Controllers", "app/controllers"

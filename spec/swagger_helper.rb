@@ -29,17 +29,12 @@ RSpec.configure do |config|
       paths: {},
       servers: [
         {
-          url: 'http://localhost:3000',
-          description: 'Development server'
+          url: 'https://thelibrarian-api.onrender.com',
+          description: 'Production server'
         },
         {
-          url: 'https://{defaultHost}',
-          description: 'Production server',
-          variables: {
-            defaultHost: {
-              default: 'api.library.com'
-            }
-          }
+          url: 'http://localhost:3000',
+          description: 'Development server'
         }
       ],
       components: {

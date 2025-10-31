@@ -155,36 +155,49 @@ RSpec.describe 'Api::V1::Borrowings', type: :request do
     let!(:borrowing) { create(:borrowing, user: member, book: book) }
 
     context 'when returning a book' do
-      it 'marks the borrowing as returned' do
+      it 'does not allow member to return their own book' do
         put "/api/v1/borrowings/#{borrowing.id}", params: { action_type: 'return' }, headers: auth_headers(member)
+
+        expect(response).to have_http_status(:forbidden)
+        expect(json_response['error']).to eq('You are not authorized to perform this action')
+        expect(borrowing.reload.returned_at).to be_nil
+      end
+
+      it 'allows librarian to return a book' do
+        put "/api/v1/borrowings/#{borrowing.id}", params: { action_type: 'return' }, headers: auth_headers(librarian)
 
         expect(response).to have_http_status(:ok)
         expect(json_response['message']).to eq('Book returned successfully')
         expect(borrowing.reload.returned_at).to be_present
       end
 
-      it 'increments available copies' do
+      it 'increments available copies when librarian returns book' do
         # Book starts with 5, borrowing decrements to 4
         expect(book.reload.available_copies).to eq(4)
 
-        put "/api/v1/borrowings/#{borrowing.id}", params: { action_type: 'return' }, headers: auth_headers(member)
+        put "/api/v1/borrowings/#{borrowing.id}", params: { action_type: 'return' }, headers: auth_headers(librarian)
 
         # After return, should be back to 5
         expect(book.reload.available_copies).to eq(5)
       end
 
-      it 'allows librarian to return any book' do
-        put "/api/v1/borrowings/#{borrowing.id}", params: { action_type: 'return' }, headers: auth_headers(librarian)
+      it 'does not allow member to return another members book' do
+        other_member = create(:user, :member)
+        other_borrowing = create(:borrowing, user: other_member, book: book)
 
-        expect(response).to have_http_status(:ok)
+        put "/api/v1/borrowings/#{other_borrowing.id}", params: { action_type: 'return' }, headers: auth_headers(member)
+
+        expect(response).to have_http_status(:forbidden)
+        expect(json_response['error']).to eq('You are not authorized to perform this action')
       end
     end
 
     context 'with invalid action' do
-      it 'returns bad request' do
-        put "/api/v1/borrowings/#{borrowing.id}", params: { action_type: 'invalid' }, headers: auth_headers(member)
+      it 'returns bad request when librarian uses invalid action' do
+        put "/api/v1/borrowings/#{borrowing.id}", params: { action_type: 'invalid' }, headers: auth_headers(librarian)
 
         expect(response).to have_http_status(:bad_request)
+        expect(json_response['errors']).to include('Invalid action')
       end
     end
   end

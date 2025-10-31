@@ -15,8 +15,8 @@ class BorrowingPolicy < ApplicationPolicy
   end
 
   def update?
-    # Only the borrowing owner or librarian can update (for returns)
-    user.librarian? || record.user == user
+    # Only librarians can update borrowings (for returns)
+    user.librarian?
   end
 
   def destroy?
