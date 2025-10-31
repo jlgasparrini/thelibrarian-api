@@ -1,0 +1,19 @@
+filename: "docs/erd"
+filetype: png
+
+title: "TheLibrarian API — ERD"
+notation: simple
+
+exclude:
+  - schema_migrations
+  - ar_internal_metadata
+  - audits
+  - jwt_denylist
+
+attributes:
+  - content
+  - primary_keys
+  - foreign_keys
+
+indirect: true
+relationships: true

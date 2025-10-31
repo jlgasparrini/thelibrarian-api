@@ -13,6 +13,7 @@ A **production-ready Ruby on Rails RESTful API** for library management, featuri
 ## 🎯 Overview
 
 This API supports two user roles:
+
 - **Librarians** - Manage books, track borrowings, monitor library activity
 - **Members** - Browse books, borrow/return items, track due dates
 
@@ -30,49 +31,50 @@ Built with clean architecture, comprehensive test coverage, and production-ready
 
 ## ⚙️ Tech Stack
 
-| Category | Technology |
-|-----------|-------------|
-| **Language** | Ruby 3.4.7 |
-| **Framework** | Ruby on Rails 8.0.4 (API mode) |
-| **Database** | PostgreSQL 14.17 |
-| **Authentication** | Devise + Devise-JWT |
-| **Authorization** | Pundit |
-| **Testing** | RSpec + FactoryBot + Faker + SimpleCov |
-| **Pagination** | Pagy |
-| **Soft Delete** | Paranoia |
-| **Audit Logging** | Audited |
-| **API Docs** | Rswag (Swagger/OpenAPI) |
-| **CI/CD** | GitHub Actions |
-| **Deployment** | Docker + Render.com |
-| **Code Quality** | RuboCop + Brakeman |
+| Category           | Technology                             |
+| ------------------ | -------------------------------------- |
+| **Language**       | Ruby 3.4.7                             |
+| **Framework**      | Ruby on Rails 8.0.4 (API mode)         |
+| **Database**       | PostgreSQL 14.17                       |
+| **Authentication** | Devise + Devise-JWT                    |
+| **Authorization**  | Pundit                                 |
+| **Testing**        | RSpec + FactoryBot + Faker + SimpleCov |
+| **Pagination**     | Pagy                                   |
+| **Soft Delete**    | Paranoia                               |
+| **Audit Logging**  | Audited                                |
+| **API Docs**       | Rswag (Swagger/OpenAPI)                |
+| **CI/CD**          | GitHub Actions                         |
+| **Deployment**     | Docker + Render.com                    |
+| **Code Quality**   | RuboCop + Brakeman                     |
 
 ---
 
 ## 🎯 Features
 
-| Feature | Description |
-|---------|-------------|
-| 👤 **Authentication** | JWT-based auth with Devise (sign up, sign in, sign out) |
-| 🔐 **Authorization** | Role-based access control with Pundit (Librarian/Member) |
-| 📚 **Book Management** | Full CRUD for librarians, read-only for members |
-| 🔍 **Search & Filter** | Search by title/author/ISBN, filter by genre/availability |
-| 📖 **Borrowing System** | Borrow/return books with automatic due dates (14 days) |
-| 📊 **Dashboards** | Role-specific analytics and borrowing insights |
-| 📄 **Pagination** | Pagy-powered pagination on all list endpoints |
-| 🗑️ **Soft Delete** | Paranoia gem for logical deletion with restore capability |
-| 📝 **Audit Logging** | Complete audit trail of all changes with Audited gem |
-| 📚 **API Documentation** | Interactive Swagger/OpenAPI docs at `/api-docs` |
-| 🐳 **Docker Support** | Full Docker Compose setup for local development |
-| 🚀 **CI/CD** | GitHub Actions with automated testing and deployment |
-| 🌐 **Production Deployment** | Live on Render.com with PostgreSQL database |
+| Feature                      | Description                                               |
+| ---------------------------- | --------------------------------------------------------- |
+| 👤 **Authentication**        | JWT-based auth with Devise (sign up, sign in, sign out)   |
+| 🔐 **Authorization**         | Role-based access control with Pundit (Librarian/Member)  |
+| 📚 **Book Management**       | Full CRUD for librarians, read-only for members           |
+| 🔍 **Search & Filter**       | Search by title/author/ISBN, filter by genre/availability |
+| 📖 **Borrowing System**      | Borrow/return books with automatic due dates (14 days)    |
+| 📊 **Dashboards**            | Role-specific analytics and borrowing insights            |
+| 📄 **Pagination**            | Pagy-powered pagination on all list endpoints             |
+| 🗑️ **Soft Delete**           | Paranoia gem for logical deletion with restore capability |
+| 📝 **Audit Logging**         | Complete audit trail of all changes with Audited gem      |
+| 📚 **API Documentation**     | Interactive Swagger/OpenAPI docs at `/api-docs`           |
+| 🐳 **Docker Support**        | Full Docker Compose setup for local development           |
+| 🚀 **CI/CD**                 | GitHub Actions with automated testing and deployment      |
+| 🌐 **Production Deployment** | Live on Render.com with PostgreSQL database               |
 
 ---
 
 ## 🌐 Try It Out (Live API)
 
 The API is deployed and ready to use:
-* **Swagger UI:** [https://thelibrarian-api.onrender.com/api-docs](https://thelibrarian-api.onrender.com/api-docs)
-* **OpenAPI:** [https://thelibrarian-api.onrender.com/api-docs/v1/swagger.yaml](https://thelibrarian-api.onrender.com/api-docs/v1/swagger.yaml)
+
+- **Swagger UI:** [https://thelibrarian-api.onrender.com/api-docs](https://thelibrarian-api.onrender.com/api-docs)
+- **OpenAPI:** [https://thelibrarian-api.onrender.com/api-docs/v1/swagger.yaml](https://thelibrarian-api.onrender.com/api-docs/v1/swagger.yaml)
 
 ---
 
@@ -122,6 +124,7 @@ docker compose exec web bundle exec rspec
 ### 🔑 Demo Credentials
 
 After running `db:seed`:
+
 - **Librarian:** `admin@library.com` / `password`
 - **Member:** `member@library.com` / `password`
 - **Member:** `john.doe@library.com` / `password`
@@ -141,12 +144,14 @@ curl http://localhost:3000/api/v1/health
 ## 🧪 Testing
 
 ### Test Coverage
+
 - Model specs (validations, associations, scopes, audit logging)
 - Request specs (endpoints, authentication, authorization)
 - Policy specs (role-based access control)
 - Integration specs (API documentation with Rswag)
 
 ### Run Tests
+
 ```bash
 # All tests (with coverage report)
 bundle exec rspec
@@ -163,7 +168,20 @@ open coverage/index.html
 
 ## 🏗️ Architecture & Design Patterns
 
+### System Architecture Diagram (ERD)
+
+![Entity Relationship Diagram](docs/erd.png)
+
+Generate/update the diagram locally (requires Graphviz):
+
+```bash
+brew install graphviz   # or: sudo apt-get install -y graphviz
+bundle install
+bundle exec erd         # outputs to docs/erd.png
+```
+
 ### Clean Architecture
+
 - **Controllers** - Handle HTTP concerns only
 - **Services** - Complex business logic (e.g., DashboardService)
 - **Serializers** - JSON response formatting
@@ -171,6 +189,7 @@ open coverage/index.html
 - **Concerns** - Reusable modules (JsonResponse, JwtAuthentication)
 
 ### Key Patterns
+
 - **Service Objects** - Encapsulate complex operations
 - **Serializers** - Consistent API responses
 - **Scopes** - Reusable query logic
@@ -181,8 +200,8 @@ open coverage/index.html
 
 ## 👤 Author
 
-**Leonel Gasparrini**  
-Ruby on Rails Developer  
+**Leonel Gasparrini**
+Ruby on Rails Developer
 🇦🇷 Argentina
 
 - [GitHub](https://github.com/jlgasparrini)

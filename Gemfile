@@ -72,6 +72,11 @@ group :development, :test do
   gem "shoulda-matchers", "~> 6.0"
 end
 
+group :development do
+  # Generate entity-relationship diagrams (requires Graphviz installed locally)
+  gem "rails-erd", require: false
+end
+
 # Testing
 group :test do
   gem "database_cleaner-active_record", "~> 2.2"
