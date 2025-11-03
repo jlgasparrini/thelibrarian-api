@@ -373,8 +373,8 @@ GEM
       rexml
     ruby-progressbar (1.13.0)
     securerandom (0.4.1)
-    shoulda-matchers (6.5.0)
-      activesupport (>= 5.2.0)
+    shoulda-matchers (7.0.1)
+      activesupport (>= 7.1)
     simplecov (0.22.0)
       docile (~> 1.1)
       simplecov-html (~> 0.11)
@@ -412,7 +412,7 @@ GEM
     unicode-display_width (3.2.0)
       unicode-emoji (~> 4.1)
     unicode-emoji (4.1.0)
-    uri (1.0.4)
+    uri (1.1.0)
     useragent (0.16.11)
     warden (1.2.9)
       rack (>= 2.0.9)
@@ -464,7 +464,7 @@ DEPENDENCIES
   rspec_junit_formatter (~> 0.6)
   rswag (~> 2.15)
   rubocop-rails-omakase
-  shoulda-matchers (~> 6.0)
+  shoulda-matchers (~> 7.0)
   simplecov (~> 0.22)
   solid_cache
   solid_queue
