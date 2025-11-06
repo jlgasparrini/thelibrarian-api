@@ -31,7 +31,7 @@ gem "paranoia", "~> 3.0"
 gem "audited", "~> 5.4"
 
 # API documentation
-gem "rswag", "~> 2.15"
+gem "rswag", "~> 2.17"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
