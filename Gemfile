@@ -25,7 +25,7 @@ gem "pundit", "~> 2.3"
 gem "pagy", "~> 9.0"
 
 # Soft delete
-gem "paranoia", "~> 3.0"
+gem "paranoia", "~> 3.1"
 
 # Audit logging
 gem "audited", "~> 5.4"
