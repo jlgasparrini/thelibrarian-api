@@ -22,7 +22,7 @@ gem "devise-jwt", "~> 0.12"
 gem "pundit", "~> 2.3"
 
 # Pagination
-gem "pagy", "~> 9.0"
+gem "pagy", "~> 43.0"
 
 # Soft delete
 gem "paranoia", "~> 3.0"
